@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GigaTables example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="jquery.js"></script>
+    <script src="src/js/jquery.gigatables.js"></script>
+    <link href="src/css/jquery.gigatables.css" rel="stylesheet" type="text/css"/>
+    <script src="src/js/gigatables.editor.js"></script>
+    <link href="src/css/gigatables.editor.css" rel="stylesheet" type="text/css"/>        
+  </head>
+  <body>
+    <script>
+      $(function() {
+        
+        var editor = new $.fn.GigaTable.Editor({
+          ajax : 'editor.php', 
+          struct : {
+            buttons: ['top', 'bottom'] // buttons
+          }, 
+          fields : [
+            {
+              label : "ID", 
+              name : "id",
+              type : 'hidden'
+            },            
+            {
+              label : "Article title:", 
+              name : "title", 
+              type : 'text' // default, other: password, file, select, multiselect etc
+            }, 
+            {
+              label : "Description:", 
+              name : "desc",
+              type : 'textarea'
+            },
+            {
+              label : "Date Time:", 
+              name : "date", 
+              type : 'date'
+            },
+            {
+              label : "Image:", 
+              name : "image", 
+              type : 'file'
+            }               
+          ]
+          
+        });                
+        var edito = null;
+        $('#gigatable').GigaTable({
+          struct:{ // all in
+            search : ['top', 'bottom'], 
+            rowsSelector: ['asc', 'top', 'bottom'], 
+            pagination: ['bottom']
+          },
+          lang:'ru', // english default
+          perPageRows: [25, 50, 100, 200, 500],
+          defaultPerPage : 50,          
+          ajax:'gigatables.php', 
+          columns: [
+            { // include all defaults
+              data: "id", 
+              sortable: true,
+              visible: true, 
+              searchable: true
+            },
+            {data: "desc", sortable: false},
+            {data: "title"},            
+            {
+              data: "date", 
+              searchable: false
+            },                    
+            {
+              data: "info", 
+              visible: false
+            } 
+            
+          ],
+          columnOpts: [
+            {
+              render: function(data, row, type) {
+                return '<div><form method="post" class="accForm" action=""><input type="hidden" name="action" value="forms" /><input type="hidden" name="id" value="' + row.id + '" /><div>' + data + '</div></form></div>';
+              }, 
+              target: 2
+            }, 
+            {
+              render: function(data, row, type) {
+                return '<div><form method="post" class="accForm" action=""><input type="hidden" name="action" value="forms" /><input type="hidden" name="id" value="' + row.id + '" /><div>' + data + '</div></form></div>';
+              }, 
+              target: 3
+            }            
+          ],
+          tableOpts: {
+            buttons: [
+              {extended: "editor_create", editor: editor},
+              {extended: "editor_edit", editor: editor},
+              {extended: "editor_remove", editor: editor}              
+            ],            
+            buttonsPosition: ['top', 'bottom'], 
+            theme: 'std'
+          }          
+        });       
+        
+      });
+    </script>
+    <table id="gigatable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Info</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Info</th>
+        </tr>
+    </tfoot>
+  </table>  
+
+</body>
+</html>
