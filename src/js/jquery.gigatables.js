@@ -8,7 +8,9 @@
     var that = this,
             json = null,
             struct = {},
-            language = [];
+            language = [],
+            invisibleCols = [],
+            unsearchableCols = [];
 
     var sortTimeout = null, searchTimeout = null;
 
@@ -398,14 +400,18 @@
             for (var key in json) {
 
               for (var k in json[key]) {
-
-                str = json[key][k] + '';
-                if (str.indexOf(val) !== -1) {
-                  nJson[i] = json[key];
-                  ++i;
-                  break;
+//                console.log(unsearchableCols[k]);
+                if (k !== 'GT_RowId' && unsearchableCols[k] === true) { // do not search unsearchable
+                  
+                  str = json[key][k] + '';
+                  if (str.indexOf(val) !== -1) {
+                    nJson[i] = json[key];
+                    ++i;
+                    break;
+                  }
+                  
                 }
-
+                
               }
 
             }
@@ -595,7 +601,7 @@
 
         tBody += '<tr class="' + active + '" gte-row-id="' + rowId + '">';
         for (var td in jsonStruct[tr]) {
-          if (td !== 'GT_RowId')
+          if (td !== 'GT_RowId' && invisibleCols[td] === true)
             tBody += '<td data-name="' + td + '">' + jsonStruct[tr][td] + '</td>';
         }
         tBody += '</tr>';
@@ -661,34 +667,34 @@
         var colOpts = settings.columnOpts;
 
         if (colOpts.length > 0) {
-          
+
           var col = 0, content = '';
-          
+
           for (var td in jsonStruct[tr]) {
-            if (td !== 'GT_RowId') {
-              
+            if (td !== 'GT_RowId' && invisibleCols[td] === true) {
+
               content = jsonStruct[tr][td];
-              
+
               for (var k in colOpts) {
                 if (typeof colOpts[k].render !== 'undefined' && colOpts[k].target === col) { // got some render user defined func
                   var row = {
-                    id : rowId
+                    id: rowId
                   };
                   var type = 'string';
                   content = colOpts[k].render(content, row, type);
-                  
+
                 }
               }
-              
+
               tBody += '<td data-name="' + td + '">' + content + '</td>';
             }
             ++col;
           }
         } else {
           for (var td in jsonStruct[tr]) {
-            if (td !== 'GT_RowId')
+            if (td !== 'GT_RowId' && invisibleCols[td] === true)
               tBody += '<td data-name="' + td + '">' + jsonStruct[tr][td] + '</td>';
-          }          
+          }
         }
 
         tBody += '</tr>';
@@ -1031,6 +1037,29 @@
         return false;
       }
 
+      var ths = container.find('th'); // ths in this particular container
+
+      ths.each(function () { // set for each th default sort opts except excluded 
+        var th = $(this), idx = th.index();
+        if (settings.columns[idx].sortable !== false) {
+          th.addClass('sorting');
+        }
+        if (settings.columns[idx].visible === false) {
+          th.hide();
+//          th.addClass('invisible');
+          invisibleCols[settings.columns[idx].data] = false;
+        } else {
+          invisibleCols[settings.columns[idx].data] = true;
+        }
+
+        if (settings.columns[idx].searchable === false) {
+//          th.addClass('unsearchable');
+          unsearchableCols[settings.columns[idx].data] = false;
+        } else {
+          unsearchableCols[settings.columns[idx].data] = true;
+        }
+      });
+
       setTableRows(settings, json);
       setSort(settings, json);
 
@@ -1042,20 +1071,6 @@
       var tableWidth = that.width();
       container.css('width', (tableWidth + 40) + 'px');
 
-      var ths = container.find('th'); // ths in this particular container
-
-      ths.each(function () { // set for each th default sort opts except excluded 
-        var th = $(this), idx = th.index();
-        if (settings.columns[idx].sortable !== false) {
-          th.addClass('sorting');
-        }
-        if (settings.columns[idx].visible === false) {
-          th.addClass('invisible');
-        }        
-        if (settings.columns[idx].searchable === false) {
-          th.addClass('unsearchable');
-        }                
-      });
     });
 
     return this;
