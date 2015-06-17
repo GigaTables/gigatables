@@ -19,29 +19,29 @@ To initialize plug-in and to bind GigaTables with table structure You don't need
             pagination: ['bottom']
           },
           lang:'ru', // english default
-          perPageRows: [25, 50, 100, 200, 500],
+          perPageRows: [25, 50, 100, 200, 500], // default behavior 
           defaultPerPage : 50,          
           ajax:'gigatables.php', // to return JSON structure - see example bellow 
           columns: [
             { // include all defaults
               data: "id", 
-              sortable: true,
-              visible: true, 
-              searchable: true
+              sortable: true, // default
+              visible: true, // default
+              searchable: true // default
             },
-            {data: "desc", sortable: false},
+            {data: "desc", sortable: false // turn off sorting},
             {data: "title"},            
             {
               data: "date", 
-              searchable: false
+              searchable: false // turn off searching 
             },                    
             {
               data: "info", 
-              visible: false
+              visible: false // turn off from viewing this column content
             } 
             
           ],
-          columnOpts: [
+          columnOpts: [ // optionally U can render any columns as U want or skip this option
             {
               render: function(data, row, type) {
                 return '<div><form method="post" class="accForm" action=""><input type="hidden" name="action" value="forms" /><input type="hidden" name="id" value="' + row.id + '" /><div>' + data + '</div></form></div>';
@@ -55,13 +55,13 @@ To initialize plug-in and to bind GigaTables with table structure You don't need
               target: 3
             }            
           ],
-          tableOpts: {
+          tableOpts: { // this is only for additional editor plug-in which helps edit every row with any type 
             buttons: [
               {extended: "editor_create", editor: editor},
               {extended: "editor_edit", editor: editor},
               {extended: "editor_remove", editor: editor}              
             ],            
-            buttonsPosition: ['top', 'bottom'], 
+            buttonsPosition: ['top', 'bottom'], // buttons for popup editing
             theme: 'std'
           }          
         });  
