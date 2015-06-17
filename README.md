@@ -21,7 +21,7 @@ To initialize plug-in and to bind GigaTables with table structure You don't need
           lang:'ru', // english default
           perPageRows: [25, 50, 100, 200, 500],
           defaultPerPage : 50,          
-          ajax:'gigatables.php', 
+          ajax:'gigatables.php', // to return JSON structure - see example bellow 
           columns: [
             { // include all defaults
               data: "id", 
@@ -92,3 +92,28 @@ The table is defined like in example below:
   </table>
 ```
   
+JSON structure to be return from provided url in "ajax" GigaTables option:
+
+```JSON
+{
+    "rows": [
+        {
+            "GT_RowId": 2, // optional 
+            "id": 2, // if there is no GT_RowId - try to fetch "id"
+            "title": "Test 2st row",
+            "desc": "<input type=\"text\" name=\"ttl\" value=\"Test 2st row Test 2st row Test 2st row
+ Test 2st row Test 2st row\" \/> ",
+            "date": "20:40:37 17:06:2015",
+            "info": "some info some info some info some info"
+        },
+        {
+            "GT_RowId": 1,
+            "id": 1,
+            "title": "Test 1st row",
+            "desc": "<input type=\"text\" name=\"ttl\" value=\"Test 1st row Test 1st row Test 1st row
+ Test 1st row Test 1st row\" \/> ",
+            "date": "20:40:38 17:06:2015",
+            "info": "some info some info some info some info"
+        }, ...
+
+```
