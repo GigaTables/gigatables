@@ -129,7 +129,7 @@ The table is defined like in example below:
   
 JSON structure to be return from provided url in "ajax" GigaTables option:
 
-```JSON
+```JS
 {
     "rows": [
         {
