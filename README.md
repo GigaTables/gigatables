@@ -39,8 +39,8 @@ do the following:
 ```JS
           struct: {
             search: ['top', 'bottom'],
-            rowsSelector: [],
-            pagination: [] 
+            rowsSelector: [], // turn off selectors
+            pagination: []  // turn off pagination
           },
 ```
 
