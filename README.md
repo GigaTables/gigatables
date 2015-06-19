@@ -36,7 +36,7 @@ To initialize plug-in and to bind GigaTables with table structure You don't need
 To turn on/off parts You can simply define this in struct, for instance to turn off pagination and rowsSelector 
 do the following:
 
-```JSON
+```JS
           struct: {
             search: ['top', 'bottom'],
             rowsSelector: [],
