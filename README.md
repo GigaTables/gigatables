@@ -220,7 +220,7 @@ That's it then You will be able to CRUD any record You want :-)
 
 ## FAQ
 
-*Can I use file types in GigaTables editor to upload files through AJAX on server?
+Can I use file types in GigaTables editor to upload files through AJAX on server?
 
 Sure, it can be done by this additional option in editor:
 
