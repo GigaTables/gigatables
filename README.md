@@ -160,3 +160,73 @@ JSON structure to be return from provided url in "ajax" GigaTables option:
         }, ...
 
 ```
+
+## An example of using GigaTables with Editor tool
+
+First of all You should define a class Editor like this:
+
+```JS
+        var editor = new $.fn.GigaTable.Editor({
+          ajax: 'editor.php',
+          ajaxFiles: 'uploadFiles.php',
+          struct: {
+            buttons: ['top', 'bottom'] // buttons
+          },
+          fields: [
+            {
+              label: "ID",
+              name: "id",
+              type: 'hidden'
+            },
+            {
+              label: "Article title:",
+              name: "title",
+              type: 'text' // default, other: password, file, select, multiselect etc
+            },
+            {
+              label: "Description:",
+              name: "desc",
+              type: 'textarea'
+            },
+            {
+              label: "Date Time:",
+              name: "date",
+              type: 'date'
+            },
+            {
+              label: "Image:",
+              name: "image",
+              type: 'file'
+            }
+          ]
+
+        });
+```        
+
+and then pass variable (in this case - editor) to GigaTables main options in tableOpts section like this:
+```JS
+          tableOpts: {
+            buttons: [
+              {extended: "editor_create", editor: editor},
+              {extended: "editor_edit", editor: editor},
+              {extended: "editor_remove", editor: editor}
+            ],
+            buttonsPosition: ['top', 'bottom'],
+            theme: 'std'
+          }
+```
+
+That's it then You will be able to CRUD any record You want :-)
+
+## FAQ
+
+*Can I use file types in GigaTables editor to upload files through AJAX on server?
+
+Sure, it can be done by this additional option in editor:
+
+```JS
+ajaxFiles: 'uploadFiles.php',
+```
+
+wich is point on script on the server where it should upload the file(s).
+
