@@ -1,5 +1,5 @@
 # GigaTables JQuery plug-in
-GigaTables is a plug-in to help web-developers process data in applications and CMS, CRM systems
+GigaTables is a plug-in to help web-developers process data in applications and CMS, CRM, ERP or similar systems
 
 ## Installation
 ```HTML
