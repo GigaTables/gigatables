@@ -15,36 +15,21 @@ To initialize plug-in and to bind GigaTables with table structure You don't need
 
 ```JS
 
-$('#gigatable').GigaTable({
-          struct:{ // all in
-            search : ['top', 'bottom'], 
-            rowsSelector: ['asc', 'top', 'bottom'], 
+        $('#gigatable').GigaTable({
+          struct: {// all in
+            search: ['top', 'bottom'],
+            rowsSelector: ['asc', 'top', 'bottom'],
             pagination: ['bottom']
           },
-          lang:'ru', // english default
-          perPageRows: [25, 50, 100, 200, 500],
-          defaultPerPage : 50,          
-          ajax:'gigatables.php', 
+          ajax: 'gigatables.php',
           columns: [
-            { // include all defaults
-              data: "id", 
-              sortable: true,
-              visible: true, 
-              searchable: true
-            },
-            {data: "desc", sortable: false},
-            {data: "title"},            
-            {
-              data: "date", 
-              searchable: false
-            },                    
-            {
-              data: "info", 
-//              visible: false
-            } 
-            
-          ]          
-        });      
+            {data: "id"},
+            {data: "desc"},
+            {data: "title"},
+            {data: "date"},
+            {data: "info"}
+          ]
+        });   
 
 ```
 
