@@ -7,6 +7,14 @@ GigaTables is a plug-in to help web-developers process data in applications and 
     <script src="src/js/jquery.gigatables.js"></script>
     <link href="src/css/jquery.gigatables.css" rel="stylesheet" type="text/css"/>
 ```
+
+To use GigaTables editor: 
+
+```HTML
+    <script src="src/js/gigatables.editor.js"></script>
+    <link href="src/css/gigatables.editor.css" rel="stylesheet" type="text/css"/>        
+```
+
 ## Getting Started
 
 To initialize plug-in and to bind GigaTables with table structure You don't need to do a lot - just call a GigaTables with options and set table structure in HTML. The <tbody> tag, it's rows and all the stuff like pagination, per page selector will be constructed automatically and only if U need this. 
