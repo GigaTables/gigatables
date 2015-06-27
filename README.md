@@ -230,3 +230,22 @@ ajaxFiles: 'uploadFiles.php',
 
 wich is point on script on the server where it should upload the file(s).
 
+And to add the actual field which will send the file to the server script: 
+```JS
+            {
+              label: "Image:",
+              name: "image",
+              type: 'file'
+            }
+```
+Ensure that the field is in *fields: [* option.
+
+What types of fields I can use in editor? 
+
+Any, really - You can use any types, they are already embedded, but responsibility of supported ones (in different Browsers) 
+is on Your side.
+
+Can I choose more then one row?
+
+Yes, U can even choose not only the bunch of rows, but several bunches and some between them, by manipulating with: 
+Ctrl+Left click (one anywhere) and Shift+Left click (several).
