@@ -240,9 +240,9 @@ And to add the actual field which will send the file to the server script:
 ```
 Ensure that the field is in *fields: [* option.
 
-**What types of fields I can use in editor? **
+**What types of fields can be used in editor?**
 
-Any, really - You can use any types, they are already embedded, but responsibility of supported ones (in different Browsers) 
+Any, really - You can use any HTML5 types, they are already embedded, but responsibility of supported ones (in different Browsers) 
 is on Your side.
 
 **Can I choose more then one row?**
