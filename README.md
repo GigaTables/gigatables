@@ -256,6 +256,6 @@ Defenitelly, also it is simple enough to sort them jointly.
 
 **What does search field mean?**
 
-The main search field above (default state U can make it visible in the bottom) is useful for searching through all columns.
+The main search field above (which is the default state, U can make it visible in the bottom) is useful for searching through all columns.
 
 
