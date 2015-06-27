@@ -220,7 +220,7 @@ That's it then You will be able to CRUD any record You want :-)
 
 ## FAQ
 
-Can I use file types in GigaTables editor to upload files through AJAX on server?
+**Can I use file types in GigaTables editor to upload files through AJAX on server?**
 
 Sure, it can be done by this additional option in editor:
 
@@ -240,12 +240,22 @@ And to add the actual field which will send the file to the server script:
 ```
 Ensure that the field is in *fields: [* option.
 
-What types of fields I can use in editor? 
+**What types of fields I can use in editor? **
 
 Any, really - You can use any types, they are already embedded, but responsibility of supported ones (in different Browsers) 
 is on Your side.
 
-Can I choose more then one row?
+**Can I choose more then one row?**
 
 Yes, U can even choose not only the bunch of rows, but several bunches and some between them, by manipulating with: 
-Ctrl+Left click (one anywhere) and Shift+Left click (several).
+Ctrl+Left click (one row anywhere) and Shift+Left click (several rows).
+
+**Can I sort columns content?**
+
+Defenitelly, also it is simple enough to sort them jointly.
+
+**What does search field mean?**
+
+The main search field above (default state U can make it visible in the bottom) is useful for searching through all columns.
+
+
