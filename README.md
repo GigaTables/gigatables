@@ -1,5 +1,5 @@
 # GigaTables JQuery plug-in
-GigaTables is a plug-in to help web-developers process data in applications and CMS, CRM systems
+GigaTables is a plug-in to help web-developers process data in applications and CMS, CRM, ERP or similar systems
 
 ## Installation
 ```HTML
@@ -7,6 +7,14 @@ GigaTables is a plug-in to help web-developers process data in applications and 
     <script src="src/js/jquery.gigatables.js"></script>
     <link href="src/css/jquery.gigatables.css" rel="stylesheet" type="text/css"/>
 ```
+
+To use GigaTables editor: 
+
+```HTML
+    <script src="src/js/gigatables.editor.js"></script>
+    <link href="src/css/gigatables.editor.css" rel="stylesheet" type="text/css"/>        
+```
+
 ## Getting Started
 
 To initialize plug-in and to bind GigaTables with table structure You don't need to do a lot - just call a GigaTables with options and set table structure in HTML. The <tbody> tag, it's rows and all the stuff like pagination, per page selector will be constructed automatically and only if U need this. 
@@ -152,3 +160,102 @@ JSON structure to be return from provided url in "ajax" GigaTables option:
         }, ...
 
 ```
+
+## An example of using GigaTables with Editor tool
+
+First of all You should define a class Editor like this:
+
+```JS
+        var editor = new $.fn.GigaTable.Editor({
+          ajax: 'editor.php',
+          ajaxFiles: 'uploadFiles.php',
+          struct: {
+            buttons: ['top', 'bottom'] // buttons
+          },
+          fields: [
+            {
+              label: "ID",
+              name: "id",
+              type: 'hidden'
+            },
+            {
+              label: "Article title:",
+              name: "title",
+              type: 'text' // default, other: password, file, select, multiselect etc
+            },
+            {
+              label: "Description:",
+              name: "desc",
+              type: 'textarea'
+            },
+            {
+              label: "Date Time:",
+              name: "date",
+              type: 'date'
+            },
+            {
+              label: "Image:",
+              name: "image",
+              type: 'file'
+            }
+          ]
+
+        });
+```        
+
+and then pass variable (in this case - editor) to GigaTables main options in tableOpts section like this:
+```JS
+          tableOpts: {
+            buttons: [
+              {extended: "editor_create", editor: editor},
+              {extended: "editor_edit", editor: editor},
+              {extended: "editor_remove", editor: editor}
+            ],
+            buttonsPosition: ['top', 'bottom'],
+            theme: 'std'
+          }
+```
+
+That's it then You will be able to CRUD any record You want :-)
+
+## FAQ
+
+**Can I use file types in GigaTables editor to upload files through AJAX on server?**
+
+Sure, it can be done by this additional option in editor:
+
+```JS
+ajaxFiles: 'uploadFiles.php',
+```
+
+wich is point on script on the server where it should upload the file(s).
+
+And to add the actual field which will send the file to the server script: 
+```JS
+            {
+              label: "Image:",
+              name: "image",
+              type: 'file'
+            }
+```
+Ensure that the field is in *fields: [* option.
+
+**What types of fields can be used in editor?**
+
+Any, really - You can use any HTML5 types, they are already embedded, but responsibility of supported ones (in different Browsers) 
+is on Your side.
+
+**Can I choose more then one row?**
+
+Yes, U can even choose not only the bunch of rows, but several bunches and some between them, by manipulating with: 
+Ctrl+Left click (one row anywhere) and Shift+Left click (several rows).
+
+**Can I sort columns content?**
+
+Defenitelly, also it is simple enough to sort them jointly.
+
+**What does search field mean?**
+
+The main search field above (which is the default state, U can make it visible in the bottom) is useful for searching through all columns.
+
+
