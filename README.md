@@ -258,4 +258,19 @@ Defenitelly, also it is simple enough to sort them jointly.
 
 The main search field above (which is the default state, U can make it visible in the bottom) is useful for searching through all columns.
 
+**Is it possible to search for a particular column in GT?**
 
+Yes it is, U can specify any column U wanted to search by setting these options in *columns* parts eg.: 
+
+```JS
+          columns: [
+            {// include all defaults
+              data: "id",
+              discreteSearch: true, 
+              discreteSearchValue: function(title) {
+                return 'Search on the field - ' + title;
+              }              
+            }
+```
+
+additionally U may want to set a custom placeholder - it is possible via *discreteSearchValue* option.
