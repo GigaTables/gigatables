@@ -52,9 +52,9 @@
         'prev': 'Previous',
         'next': 'Next',
         'search': 'Search',
-        'new': 'New',
-        'edit': 'Edit',
-        'delete': 'Delete'
+        'editor_create': 'New',
+        'editor_edit': 'Edit',
+        'editor_remove': 'Delete'
       },
       'gr': {
         'gte_editor_popupheader_delete': 'Löschen',
@@ -71,9 +71,9 @@
         'prev': 'früher',
         'next': 'Nächste',
         'search': 'Suche',
-        'new': 'Neu',
-        'edit': 'Bearbeiten',
-        'delete': 'Löschen'
+        'editor_create': 'Neu',
+        'editor_edit': 'Bearbeiten',
+        'editor_remove': 'Löschen'
       },
       'ru': {
         'gte_editor_popupheader_delete': 'Удалить',
@@ -109,9 +109,9 @@
         'prev': 'Précédent',
         'next': 'Suivant',
         'search': 'Recherche',
-        'new': 'Créer',
-        'edit': 'éditer',
-        'delete': 'Effacer'
+        'editor_create': 'Créer',
+        'editor_edit': 'éditer',
+        'editor_remove': 'Effacer'
       },
       'es': {
         'gte_editor_popupheader_delete': 'Borrar',
@@ -128,9 +128,9 @@
         'prev': 'Anterior',
         'next': 'Próximo',
         'search': 'Buscar',
-        'new': 'Crear',
-        'edit': 'Editar',
-        'delete': 'Borrar'
+        'editor_create': 'Crear',
+        'editor_edit': 'Editar',
+        'editor_remove': 'Borrar'
       },
       'ch': {
         'gte_editor_popupheader_delete': '删除',
@@ -147,9 +147,9 @@
         'prev': '前',
         'next': '未来',
         'search': '搜索',
-        'new': '创造',
-        'edit': '编辑',
-        'delete': '删除'
+        'editor_create': '创造',
+        'editor_edit': '编辑',
+        'editor_remove': '删除'
       },
       'hi': {
         'gte_editor_popupheader_delete': 'हटाना',
@@ -166,9 +166,9 @@
         'prev': 'पूर्व',
         'next': 'अगला',
         'search': 'खोज',
-        'new': 'बनाना',
-        'edit': 'संपादन करना',
-        'delete': 'हटाना'
+        'editor_create': 'बनाना',
+        'editor_edit': 'संपादन करना',
+        'editor_remove': 'हटाना'
       }
     };
 
@@ -234,12 +234,10 @@
 
           button = buttons[k].editor.buttons[buttons[k].extended];
 
-          if ($.inArray('top', settings.tableOpts.buttonsPosition) >= 0) {
-
+          if ($.inArray('top', settings.tableOpts.buttonsPosition) >= 0) {            
             settings.headTools.prepend('<div class="gte_buttons_container">'
                     + button.replace('gte.button.' + buttons[k].extended, eval('language.' + buttons[k].extended))
-                    + '<div class="clear"></div></div>');
-
+                    + '<div class="clear"></div></div>');            
           }
 
           if ($.inArray('bottom', settings.tableOpts.buttonsPosition) >= 0) {

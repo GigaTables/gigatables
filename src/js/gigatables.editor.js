@@ -3,7 +3,6 @@
  */
 
 $.fn.GigaTable.Editor = function (options) {
-
   var that = this;
   var json = null;
 
@@ -51,39 +50,38 @@ $.fn.GigaTable.Editor = function (options) {
 
       if (typeof form.find('input[file]') !== 'undefined') {
         // there is files - ajax upload them
-        var files;
+        var files = [];
+        var i = 0;
         form.find('input[type="file"]').on('change', function (e) {
-          files = e.target.files;
-//          console.log(files);
+          files[i++] = e.target.files;
         });
 
       }
 
       settings.container.find('#gte_sent_btn').click(function () {
 //        console.log(that.editorSettings);
-
         if (typeof files !== 'undefined' && files !== null) {
-
           var ajaxDest = obj.editorSettings.ajaxFiles;
-
-          if (ajaxDest === 'undefined' || ajaxDest === null 
+          if (ajaxDest === 'undefined' || ajaxDest === null
                   || ajaxDest === '') {
             console.error('You should secify ajaxFiles url to upload files on server.');
             return;
           }
 
           var data = new FormData();
-          $.each(files, function(k, v) {
-            data.append(k, v);
+          $.each(files, function (k, v) {
+            $.each(v, function(key, val) {
+              data.append(k, val);
+            });
           });
-
+          console.log(data);
           $.ajax({
             url: ajaxDest,
             type: 'POST',
             data: data,
             cache: false,
             dataType: 'json',
-            processData: false, 
+            processData: false,
             contentType: false
           }).done(function (data) {
 
@@ -175,27 +173,26 @@ $.fn.GigaTable.Editor = function (options) {
       this.hidePopupEvents(settings);
       this.sendAjaxEvent(settings, 'create');
     },
-    triggerPopupEdit: function (settings) {
-      settings.container.append(this.popup.edit);
+    triggerPopupEdit: function (settings) {      
+      settings.container.append(this.popup.edit);      
       settings.container.append(this.popup.background);
 
       var popup = settings.container.find('.gte_editor_popup'),
               bg = settings.container.find('.gte_popup_background');
 
-//      settings.tbody.find('tr.active').children().each(function() {
-//        popup.find('input[name=""], textarea[name=""]').val();
-//      });        
-
       var fields = this.editorSettings.fields,
               trActive = settings.tbody.find('tr.active');
-
+      
       var field = '';
-      for (var k in fields) {
-        field = trActive.children('td[data-name="' + fields[k].name + '"]');
-        if (field.length > 0) {
-          popup.find('input[name="' + fields[k].name + '"], textarea[name="' + fields[k].name + '"]').val(field.text());
-        }
-//         console.log(field);
+      var fieldName = null;
+      for (var k in fields) {        
+        field = trActive.children('td[data-name="' + fields[k].name + '"]');        
+        fieldName = fields[k].name;
+        if (field.length > 0 && fields[k].type !== 'file') { // file value protection avoiding "The operation is insecure" error         
+          popup.find('input[name="' + fieldName + '"], textarea[name="' + fieldName + '"], select[name="' + fieldName + '"], checkbox[name="' 
+                  + fieldName + '"], radio[name="' + fieldName + '"]').val(field.text());          
+          console.log(field.text());
+        }         
       }
 
       popup.show();
@@ -203,7 +200,7 @@ $.fn.GigaTable.Editor = function (options) {
       popup.fadeIn(300);
       bg.fadeIn(300);
 
-      this.hidePopupEvents(settings);
+      this.hidePopupEvents(settings);      
       this.sendAjaxEvent(settings, 'edit');
     },
     triggerPopupDelete: function (settings) {
@@ -237,7 +234,6 @@ $.fn.GigaTable.Editor = function (options) {
   }, options);
 
   function setButtons(settings) {
-
     obj.buttons.editor_edit = '<div class="gte_button edit gte_btn_disabled"><span>gte.button.editor_edit</span></div>';
     obj.buttons.editor_create = '<div class="gte_button create"><span>gte.button.editor_create</span></div>';
     obj.buttons.editor_remove = '<div class="gte_button remove gte_btn_disabled"><span>gte.button.editor_remove</span></div>';
@@ -245,7 +241,6 @@ $.fn.GigaTable.Editor = function (options) {
   }
 
   function setPopup(settings) {
-
     var popupCreate = '',
             popupEdit = '',
             popupDelete = '',
@@ -265,11 +260,11 @@ $.fn.GigaTable.Editor = function (options) {
             htmlFieldsCreate = '', htmlFieldsEdit = '';
 
     for (var k in fields) {
-
-      var type = fields[k].type;
-
-      switch (type) {
-
+      var fieldType = fields[k].type, 
+              fieldName = fields[k].name, 
+              fieldLabel = fields[k].label;
+      
+      switch (fieldType) {
         case 'text':
         case 'hidden':
         case 'email':
@@ -285,24 +280,36 @@ $.fn.GigaTable.Editor = function (options) {
         case 'url':
         case 'month':
         case 'week':
-        case 'file':
-          htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label" for="' + fields[k].name + '">' + fields[k].label + '</label><div class="gte_field"><input id="' + fields[k].name + '" type="' + type + '" name="' + fields[k].name + '" value=""/></div><div class="clear"></div></div>';
-
+        case 'file':          
+          htmlFieldsCreate += '<div class="gte_editor_fields">';
           htmlFieldsEdit += '<div class="gte_editor_fields">';
-          if (type !== 'hidden') {
-            htmlFieldsEdit += '<label class="gte_label" for="' + fields[k].name + '">' + fields[k].label + '</label>';
+          if (fieldType !== 'hidden') {
+            htmlFieldsCreate += '<label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label>';
+            htmlFieldsEdit += '<label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label>';
           }
-          htmlFieldsEdit += '<div class="gte_field"><input id="' + fields[k].name + '" type="' + type + '" name="' + fields[k].name + '" value=""/></div><div class="clear"></div></div>';
+          htmlFieldsCreate += '<div class="gte_field"><input id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" value=""/></div><div class="clear"></div></div>';
+          htmlFieldsEdit += '<div class="gte_field"><input id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" value=""/></div><div class="clear"></div></div>';
           break;
-//          htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label" for="' + fields[k].name + '">' + fields[k].label + '</label><div class="gte_field"><input id="' + fields[k].name + '" type="password" name="' + fields[k].name + '" value=""/></div><div class="clear"></div></div>';
-//          htmlFieldsEdit += '<div class="gte_editor_fields"><label class="gte_label" for="' + fields[k].name + '">' + fields[k].label + '</label><div class="gte_field"><input id="' + fields[k].name + '" type="password" name="' + fields[k].name + '" value="gte.editor.' + fields[k].name + '"/></div><div class="clear"></div></div>';
-//          break;
         case 'textarea':
-          htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label" for="' + fields[k].name + '">' + fields[k].label + '</label><div class="gte_field"><textarea id="' + fields[k].name + '" name="' + fields[k].name + '"></textarea></div><div class="clear"></div></div>';
-          htmlFieldsEdit += '<div class="gte_editor_fields"><label class="gte_label" for="' + fields[k].name + '">' + fields[k].label + '</label><div class="gte_field"><textarea id="' + fields[k].name + '" name="' + fields[k].name + '"></textarea></div><div class="clear"></div></div>';
+          htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><textarea id="' + fieldName + '" name="' + fieldName + '"></textarea></div><div class="clear"></div></div>';
+          htmlFieldsEdit += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><textarea id="' + fieldName + '" name="' + fieldName + '"></textarea></div><div class="clear"></div></div>';
           break;
+        case 'select':
+          var values = fields[k].values;
+          var options = '';
+          for (var k in values) {
+            for (var key in values[k]) {
+              options += '<option value="'+key+'">'+values[k][key]+'</option>';
+            }
+          }
+          htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><select id="' + fieldName + '" name="' + fieldName + '">'+
+                  options
+                  +'</select></div><div class="clear"></div></div>';          
+          htmlFieldsEdit += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><select id="' + fieldName + '" name="' + fieldName + '">'+
+                  options
+                  +'</select></div><div class="clear"></div></div>';                    
+          break;                  
       }
-
     }
 
     popupCreate = '<div class="gte_editor_popup"><div class="gte_popup_container"><div class="gte_popup_container_wrapper"><div class="gte_form_border_box"><div class="gte_form_fields"><div class="gte_header">' +
@@ -333,11 +340,9 @@ $.fn.GigaTable.Editor = function (options) {
     obj.popup.edit = popupEdit;
     obj.popup.delete = popupDelete;
     obj.popup.background = popupBackground;
-
   }
 
   obj.editorSettings = settings;
-
   setButtons(settings);
   setPopup(settings);
 
