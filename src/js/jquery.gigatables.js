@@ -2,9 +2,12 @@
  * Created by Arthur Kushman
  */
 (function ($) {
-
+  if (!String.prototype.trim) { // IE < 9 etc
+    String.prototype.trim = function () {
+      return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+    };
+  }
   $.fn.GigaTable = function (options) {
-
     var that = this,
             json = null,
             struct = {},
@@ -13,7 +16,6 @@
             unsearchableCols = [];
 
     var sortTimeout = null, searchTimeout = null;
-
     // if user set some opt to [] - unset opts
     struct.search = [];
     if (typeof options.struct.search === 'undefined') {
@@ -234,10 +236,10 @@
 
           button = buttons[k].editor.buttons[buttons[k].extended];
 
-          if ($.inArray('top', settings.tableOpts.buttonsPosition) >= 0) {            
+          if ($.inArray('top', settings.tableOpts.buttonsPosition) >= 0) {
             settings.headTools.prepend('<div class="gte_buttons_container">'
                     + button.replace('gte.button.' + buttons[k].extended, eval('language.' + buttons[k].extended))
-                    + '<div class="clear"></div></div>');            
+                    + '<div class="clear"></div></div>');
           }
 
           if ($.inArray('bottom', settings.tableOpts.buttonsPosition) >= 0) {
@@ -314,12 +316,12 @@
       var ths = settings.container.find('th'); // ths in this particular container
 
       var i = 0, c = ths.length / 2;
-    
+
       ths.each(function () {
 
         var that = $(this), idx = that.index();
-           
-        if (settings.columns[idx].sortable !== false && (settings.columns[idx].discreteSearch !== true 
+
+        if (settings.columns[idx].sortable !== false && (settings.columns[idx].discreteSearch !== true
                 || (settings.columns[idx].discreteSearch === true && i < c))) {
 
           that.click(function () {
@@ -382,97 +384,67 @@
     }
 
     function setSearch(settings, json) {
-
       settings.container.find('.gt_search').keyup(function () {
-
         var objSearch = $(this), val = objSearch.val();
 
         searchTimeout = setTimeout(function () {
-
           if (val.length > 1 || (val.length === 0 && val === '')) { // do search
-
             if (val === '') {
               setTableRows(settings, json);
               return;
             }
 
             var nJson = [], str = '', i = 0;
-
             for (var key in json) {
-
               for (var k in json[key]) {
 //                console.log(unsearchableCols[k]);
                 if (k !== 'GT_RowId' && unsearchableCols[k] === true) { // do not search unsearchable
-                  
                   str = json[key][k] + '';
                   if (str.indexOf(val) !== -1) {
                     nJson[i] = json[key];
                     ++i;
                     break;
                   }
-                  
                 }
-                
               }
-
             }
-
             setTableRows(settings, json, nJson);
-
           }
-
         }, 300);
-
       });
-
     }
-    
+
     function setDiscreteSearch(settings, json) {
-
       settings.tfoot.find('th input').keyup(function () {
-
         var objSearch = $(this), val = objSearch.val(), idx = objSearch.parent().index();
 
         searchTimeout = setTimeout(function () {
-
           if (val.length > 1 || (val.length === 0 && val === '')) { // do search
-
             if (val === '') {
               setTableRows(settings, json);
               return;
             }
 
             var nJson = [], str = '', i = 0;
-
             for (var key in json) {
-
               for (var k in json[key]) {
 //                console.log(unsearchableCols[k]);
-                if (k !== 'GT_RowId' && unsearchableCols[k] === true 
+                if (k !== 'GT_RowId' && unsearchableCols[k] === true
                         && settings.columns[idx].data === k) { // do not search unsearchable
-                  
                   str = json[key][k] + '';
                   if (str.indexOf(val) !== -1) {
                     nJson[i] = json[key];
                     ++i;
                     break;
                   }
-                  
                 }
-                
               }
-
             }
-
             setTableRows(settings, json, nJson);
-
           }
-
         }, 300);
-
       });
-
-    }    
+    }
 
     function setPgnSelect(sets, json) {
 
@@ -1058,7 +1030,7 @@
     // set additional opts
     settings.thead = thead;
     settings.tbody = thead.next();
-    settings.tfoot = tfoot;    
+    settings.tfoot = tfoot;
     settings.headThs = headThs;
     settings.cntCols = cntCols;
     settings.headTools = headTools;
@@ -1107,38 +1079,28 @@
         }
       });
 
-      tfoot.find('th').each(function() {
-        
+      tfoot.find('th').each(function () {
         var th = $(this), idx = th.index();
-        
         if (settings.columns[idx].discreteSearch === true) {
-          
-          var val = 'Search in '+th.text();
-          
+          var val = 'Search in ' + th.text();
+
           if (typeof settings.columns[idx].discreteSearchValue !== 'undefined') {
             val = settings.columns[idx].discreteSearchValue(th.text());
             th.removeClass('sorting');
           }
-          
-          th.html('<input type="text" placeholder="'+val+'" />')
-          
+          th.html('<input type="text" placeholder="' + val + '" />')
         }
-        
       });
-
       setTableRows(settings, json);
       setSort(settings, json);
 
       if (settings.tableOpts.buttons.length > 0) {
         setButtons(settings);
       }
-
       // get ready structure 
       var tableWidth = that.width();
       container.css('width', (tableWidth + 40) + 'px');
-
     });
-
     return this;
   };
 }(jQuery));
