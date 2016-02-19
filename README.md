@@ -36,6 +36,7 @@ To initialize plug-in and to bind GigaTables with table structure You don't need
             {data: "desc"},
             {data: "title"},
             {data: "date"},
+            {data: "types"},
             {data: "info"}
           ]
         });   
@@ -121,6 +122,7 @@ The table is defined like in example below:
           <th>Name</th>
           <th>Description</th>
           <th>Date</th>
+          <th>Types</th>
           <th>Info</th>
         </tr>
       </thead>
@@ -130,6 +132,7 @@ The table is defined like in example below:
           <th>Name</th>
           <th>Description</th>
           <th>Date</th>
+          <th>Types</th>
           <th>Info</th>
         </tr>
     </tfoot>
@@ -178,7 +181,7 @@ First of all You should define a class Editor like this:
               label: "ID",
               name: "id",
               type: 'hidden'
-            },
+            },                    
             {
               label: "Article title:",
               name: "title",
@@ -193,6 +196,15 @@ First of all You should define a class Editor like this:
               label: "Date Time:",
               name: "date",
               type: 'date'
+            },
+            { // an example of using select - automatically selected if matches with data in table column
+              label: "Types:",
+              name: "types", 
+              values: [ // if select,checkbox,radio etc types - need this kinda structure of value
+                  {'key1':'val1'}, 
+                  {'key2':'val2'}
+              ],            
+              type: 'select' // select,checkbox,radio
             },
             {
               label: "Image:",
