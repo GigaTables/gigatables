@@ -13,7 +13,6 @@
   <body>
     <script>
       $(function () {
-
         var editor = new $.fn.GigaTable.Editor({
           ajax: 'editor.php',
           ajaxFiles: 'uploadFiles.php',
@@ -26,6 +25,15 @@
               name: "id",
               type: 'hidden'
             },
+            { // an example of using select - automatically selected if matches with data in table column
+              label: "Types:",
+              name: "types", 
+              values: [ // if select,checkbox,radio etc types - need this kinda structure of value
+                  {'key1':'val1'}, 
+                  {'key2':'val2'}
+              ],            
+              type: 'select' // select,checkbox,radio
+            },            
             {
               label: "Article title:",
               name: "title",
@@ -47,7 +55,6 @@
               type: 'file'
             }
           ]
-
         });
 //        var edito = null;
 
