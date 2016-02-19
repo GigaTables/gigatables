@@ -1,6 +1,6 @@
 # GigaTables JQuery plug-in
 GigaTables is a plug-in to help web-developers process data in applications and CMS, CRM, ERP or similar systems. 
-Unlike other JQuery-based tables (which earn money from CRUD ops for example) it is on MIT license - totally free
+Unlike other JQuery-based tables (which earn money from CRUD operations) it is under MIT license - totally free
 
 ## Installation
 ```HTML
