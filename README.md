@@ -233,7 +233,7 @@ That's it then You will be able to CRUD any record You want :-)
 
 ## FAQ
 
-**Can I use file types in GigaTables editor to upload files through AJAX on server?**
+**Can I use file types in GT editor to upload files through AJAX on server?**
 
 Sure, it can be done by this additional option in editor:
 
@@ -290,4 +290,4 @@ additionally U may want to set a custom placeholder - it is possible via *discre
 
 **Is there languages support?**
 
-Sure, You can choose from 7 languages: English, German, Russian, French, Spanish, Chinese, Hindi - en, gr, ru, fr, es, ch, hi respectively.
+Sure, You can pick one of 7 languages: English, German, Russian, French, Spanish, Chinese, Hindi - en, gr, ru, fr, es, ch, hi respectively.
