@@ -16,6 +16,7 @@
             unsearchableCols = [];
 
     var sortTimeout = null, searchTimeout = null;
+    var lastTimeKeyup = (new Date()).getTime(), nowMillis = 0;
     // if user set some opt to [] - unset opts
     struct.search = [];
     if (typeof options.struct.search === 'undefined') {
@@ -370,47 +371,42 @@
 
                   return b - a;
                 }
-
               });
               setTableSort(settings, nJson);
             }, 50); // silly pressing buttons protection
-
           });
-
         }
         ++i;
       });
-
     }
 
     function setSearch(settings, json) {
       settings.container.find('.gt_search').keyup(function () {
         var objSearch = $(this), val = objSearch.val();
-
-        searchTimeout = setTimeout(function () {
-          if (val.length > 1 || (val.length === 0 && val === '')) { // do search
-            if (val === '') {
-              setTableRows(settings, json);
-              return;
-            }
-
-            var nJson = [], str = '', i = 0;
-            for (var key in json) {
-              for (var k in json[key]) {
+        nowMillis = (new Date()).getTime();
+        var period = nowMillis - lastTimeKeyup;
+        if ((period > 200 && val.length > 0) || (val.length === 0 && val === '')) { // do search
+          if (val === '') {
+            setTableRows(settings, json);
+            return;
+          }
+          var nJson = [], str = '', i = 0;
+          for (var key in json) {
+            for (var k in json[key]) {
 //                console.log(unsearchableCols[k]);
-                if (k !== 'GT_RowId' && unsearchableCols[k] === true) { // do not search unsearchable
-                  str = json[key][k] + '';
-                  if (str.indexOf(val) !== -1) {
-                    nJson[i] = json[key];
-                    ++i;
-                    break;
-                  }
+              if (k !== 'GT_RowId' && unsearchableCols[k] === true) { // do not search unsearchable
+                str = json[key][k] + '';
+                if (str.indexOf(val) !== -1) {
+                  nJson[i] = json[key];
+                  ++i;
+                  break;
                 }
               }
             }
-            setTableRows(settings, json, nJson);
           }
-        }, 300);
+          setTableRows(settings, json, nJson);
+        }
+        lastTimeKeyup = nowMillis;
       });
     }
 
