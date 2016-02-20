@@ -287,3 +287,7 @@ Yes it is, U can specify any column U wanted to search by setting these options 
 ```
 
 additionally U may want to set a custom placeholder - it is possible via *discreteSearchValue* option.
+
+**Is there languages support?**
+
+Sure, You can choose from 7 languages: English, German, Russian, French, Spanish, Chinese, Hindi - en, gr, ru, fr, es, ch, hi respectively.
