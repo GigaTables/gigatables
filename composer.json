@@ -1,5 +1,5 @@
 {
-    "name": "GT/GigaTables",
+    "name": "gt/gigatables",
     "type": "library",
     "description": "GigaTables is a JQuery plug-in to help web-developers process data in applications and CMS, CRM, ERP or similar systems.",
     "keywords": [
