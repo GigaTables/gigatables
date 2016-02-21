@@ -11,16 +11,21 @@
     var PERIOD_SEARCH = 250, // optimal period to search (onkeyup) for user experiance
             SORT_ASC = 'asc',
             SORT_DESC = 'desc',
-            POSITION_TOP = 'top', 
+            POSITION_TOP = 'top',
             POSITION_BOTTOM = 'bottom',
-            UNDEFINED = 'undefined';    
-    
+            UNDEFINED = 'undefined',
+            // opts
+            SELECTED = 'selected',
+            CHECKED = 'checked';
+
     var that = this,
             json = null,
             struct = {},
             language = [],
             invisibleCols = [],
             unsearchableCols = [];
+    // flags
+    var searchSet = 0, discreteSearchSet = 0;        
 
     var sortTimeout = null, searchTimeout = null;
     var lastTimeKeyup = (new Date()).getTime(), nowMillis = 0;
@@ -228,22 +233,16 @@
     }
 
     function setButtons(settings) {
-
       var buttons = settings.tableOpts.buttons.sort(function (a, b) {
         return b.extended.localeCompare(a.extended);
-      }),
-              btnsCnt = settings.tableOpts.buttons.length;
+      }), btnsCnt = settings.tableOpts.buttons.length;
 
       var editorObj = buttons[0].editor; // there should be at least 1 editor obj - peek it up      
-
-      if (typeof buttons !== 'undefined' && btnsCnt > 0) {
-
+      if (typeof buttons !== UNDEFINED && btnsCnt > 0) {
         var button = null;
 
         for (var k in buttons) {
-
           button = buttons[k].editor.buttons[buttons[k].extended];
-
           if ($.inArray('top', settings.tableOpts.buttonsPosition) >= 0) {
             settings.headTools.prepend('<div class="gte_buttons_container">'
                     + button.replace('gte.button.' + buttons[k].extended, eval('language.' + buttons[k].extended))
@@ -251,13 +250,10 @@
           }
 
           if ($.inArray('bottom', settings.tableOpts.buttonsPosition) >= 0) {
-
             settings.footTools.prepend('<div class="gte_buttons_container">'
                     + button.replace('gte.button.' + buttons[k].extended, eval('language.' + buttons[k].extended))
                     + '<div class="clear"></div></div>');
-
           }
-
         }
 
         // setting the events for each button
@@ -316,26 +312,19 @@
 //        });
 
       }
-
     }
 
     function setSort(settings, json) {
-
       var ths = settings.container.find('th'); // ths in this particular container
-
       var i = 0, c = ths.length / 2;
 
       ths.each(function () {
-
         var that = $(this), idx = that.index();
 
         if (settings.columns[idx].sortable !== false && (settings.columns[idx].discreteSearch !== true
                 || (settings.columns[idx].discreteSearch === true && i < c))) {
-
           that.click(function () {
-
             sortTimeout = setTimeout(function () {
-
               var objTh = that, idx = objTh.index(),
                       nJson = json, cols = settings.columns,
                       sortingOrder = 0;
@@ -388,19 +377,23 @@
     }
 
     function setSearch(settings, json) {
+      var nothing = false;
       settings.container.find('.gt_search').keyup(function () {
-        var objSearch = $(this), val = objSearch.val();
+        var objSearch = $(this), val = objSearch.val(), len = val.length;
         nowMillis = (new Date()).getTime();
         var period = nowMillis - lastTimeKeyup;
-        if ((period > PERIOD_SEARCH && val.length > 0) || (val.length === 0 && val === '')) { // do search
-          if (val === '') {
+        if ((period > PERIOD_SEARCH && len > 0) || (len === 0 && val === '')) { // do search
+          if (nothing === true && val === '') {
+            return; // exit coz user pressed not a symbol keys 
+          }
+          if (nothing === false && val === '') { // rebuild full table if teared down
             setTableRows(settings, json);
+            nothing = true;
             return;
           }
           var nJson = [], str = '', i = 0;
           for (var key in json) {
             for (var k in json[key]) {
-//                console.log(unsearchableCols[k]);
               if (k !== 'GT_RowId' && unsearchableCols[k] === true) { // do not search unsearchable
                 str = json[key][k] + '';
                 if (str.indexOf(val) !== -1) {
@@ -412,6 +405,7 @@
             }
           }
           setTableRows(settings, json, nJson);
+          nothing = false;
         }
         lastTimeKeyup = nowMillis;
       });
@@ -450,8 +444,7 @@
     }
 
     function setPgnSelect(sets, json) {
-
-      if (typeof sets.headTools !== 'undefined') {
+      if (typeof sets.headTools !== UNDEFINED) {
         var selectPerPage = sets.container.find('.gt_select');
         // listen for event on all select in this container context
         selectPerPage.change(function () {
@@ -461,11 +454,10 @@
 
           setTableRows(settings, json);
 
-          selectPerPage.find('option').prop('selected', false);
-          selectPerPage.find('option[value="' + settings.defaultPerPage + '"]').prop('selected', true);
+          selectPerPage.find('option').prop(SELECTED, false);
+          selectPerPage.find('option[value="' + settings.defaultPerPage + '"]').prop(SELECTED, true);
         });
       }
-
     }
 
     function drawPagnButtons(pages, fromRow, amount) {
@@ -497,7 +489,7 @@
           if (nextPage === pages)
             nextFrom = 0;
 //          console.log(selectedPage);
-//          selected = 'selected';
+//          selected = SELECTED;
         }
 
         if (p > MORE) {
@@ -506,7 +498,7 @@
 
             pagesDraw += '<div class="gt_page_dots">...</div>';
             if (p + 1 === pages)
-              selected = 'selected';
+              selected = SELECTED;
             pagesDraw += '<div data-from="' + ((pages - 1) * amount) + '" class="gt_page ' + selected + '">' + pages + '</div>';
             break;
           } else if (selectedPage >= MORE && selectedPage <= pages - MORE) { //middle
@@ -548,7 +540,7 @@
                 if (nextPage === pages)
                   nextFrom = 0;
 
-                selected = 'selected';
+                selected = SELECTED;
               }
 
               pagesDraw += '<div data-from="' + from + '" class="gt_page ' + selected + '">' + (i + 1) + '</div>';
@@ -558,7 +550,7 @@
           }
         } else {
           if (selectedPage === nextPage)
-            selected = 'selected';
+            selected = SELECTED;
           pagesDraw += '<div data-from="' + from + '" class="gt_page ' + selected + '">' + nextPage + '</div>';
         }
 
@@ -578,15 +570,12 @@
      */
 
     function setTableSort(sets, json) { // without recreation of all structure
-
       var tBody = '', jsonStruct = json;
-
       var rows = parseInt(sets.defaultPerPage) + parseInt(sets.fromRow);
 //      console.log('rows' + rows + ', from ' + sets.fromRow);
 //      console.log(jsonStruct);
 
       var rows = 0;
-
       if (jsonStruct.length > sets.defaultPerPage) {
         rows = parseInt(sets.defaultPerPage) + parseInt(sets.fromRow);
       } else {
@@ -597,29 +586,25 @@
       var trsActive = settings.tbody.find('tr.active');
       var trActives = [];
 
-      if (typeof trsActive !== 'undefined') {
-
+      if (typeof trsActive !== UNDEFINED) {
         trsActive.each(function () {
           var tra = $(this).attr('gte-row-id');
           trActives[tra] = tra;
         });
-
       }
 
       for (var tr = sets.fromRow; tr < rows; ++tr) {
-
         var rowId = 0, active = '';
-
-        if (typeof jsonStruct[tr]['GT_RowId'] !== 'undefined') {
+        if (typeof jsonStruct[tr]['GT_RowId'] !== UNDEFINED) {
           rowId = jsonStruct[tr]['GT_RowId'];
-        } else if (typeof jsonStruct[tr]['id'] !== 'undefined') {
+        } else if (typeof jsonStruct[tr]['id'] !== UNDEFINED) {
           rowId = jsonStruct[tr]['id'];
         } else {
           console.error('You have neither "GT_RowId" nor "id" in json structure.');
           return;
         }
 
-        if (trActives.length > 0 && typeof trActives[rowId] !== 'undefined')
+        if (trActives.length > 0 && typeof trActives[rowId] !== UNDEFINED)
           active = 'active';
 
         tBody += '<tr class="' + active + '" gte-row-id="' + rowId + '">';
@@ -635,19 +620,16 @@
       // clear timeouts
       clearTimeout(sortTimeout);
       setSelectRows(sets);
-
     }
 
     // helpers
     function setTableRows(sets, json, jsonSearch) {
-
       var tBody = '', jsonStruct = json;
-
-      if (typeof jsonSearch !== 'undefined')
+      if (typeof jsonSearch !== UNDEFINED) {
         jsonStruct = jsonSearch;
+      }
 
       var rows = 0;
-
       if (jsonStruct.length > sets.defaultPerPage) {
         rows = parseInt(sets.defaultPerPage) + parseInt(sets.fromRow);
       } else {
@@ -657,14 +639,11 @@
       // get active ids to highlight and activate rows after diff opts
       var trsActive = settings.tbody.find('tr.active');
       var trActives = [];
-
-      if (typeof trsActive !== 'undefined') {
-
+      if (typeof trsActive !== UNDEFINED) {
         trsActive.each(function () {
           var tra = $(this).attr('gte-row-id');
           trActives[tra] = tra;
         });
-
       }
 
 //      console.log('rows' + rows + ', from ' + sets.fromRow);
@@ -673,42 +652,34 @@
 //        console.log(jsonStruct[tr]['GT_RowId']);
         var rowId = 0, active = '';
 //        console.log(jsonStruct[tr]);
-        if (typeof jsonStruct[tr]['GT_RowId'] !== 'undefined') {
+        if (typeof jsonStruct[tr]['GT_RowId'] !== UNDEFINED) {
           rowId = jsonStruct[tr]['GT_RowId'];
-        } else if (typeof jsonStruct[tr]['id'] !== 'undefined') {
+        } else if (typeof jsonStruct[tr]['id'] !== UNDEFINED) {
           rowId = jsonStruct[tr]['id'];
         } else {
           console.error('You have neither "GT_RowId" nor "id" in json structure.');
           return;
         }
 
-        if (trActives.length > 0 && typeof trActives[rowId] !== 'undefined')
+        if (trActives.length > 0 && typeof trActives[rowId] !== UNDEFINED) {
           active = 'active';
-
+        }
         tBody += '<tr class="' + active + '" gte-row-id="' + rowId + '">';
-
         var colOpts = settings.columnOpts;
-
         if (colOpts.length > 0) {
-
           var col = 0, content = '';
-
           for (var td in jsonStruct[tr]) {
             if (td !== 'GT_RowId' && invisibleCols[td] === true) {
-
               content = jsonStruct[tr][td];
-
               for (var k in colOpts) {
-                if (typeof colOpts[k].render !== 'undefined' && colOpts[k].target === col) { // got some render user defined func
+                if (typeof colOpts[k].render !== UNDEFINED && colOpts[k].target === col) { // got some render user defined func
                   var row = {
                     id: rowId
                   };
                   var type = 'string';
                   content = colOpts[k].render(content, row, type);
-
                 }
               }
-
               tBody += '<td data-name="' + td + '">' + content + '</td>';
             }
             ++col;
@@ -719,20 +690,24 @@
               tBody += '<td data-name="' + td + '">' + jsonStruct[tr][td] + '</td>';
           }
         }
-
         tBody += '</tr>';
       }
-
       sets.tbody.html(tBody);
-
       // clear timeouts      
       clearTimeout(searchTimeout);
-
+      
       setSelectRows(sets);
       setPagination(sets, json); // depends on per page select, search and sorts
       setPgnSelect(settings, json);
-      setSearch(settings, json);
-      setDiscreteSearch(settings, json);
+      // @warning - avoids recursive set of events
+      if (searchSet === 0) {
+        setSearch(settings, json);
+        searchSet = 1;
+      }
+      if (discreteSearchSet === 0) {
+        setDiscreteSearch(settings, json);        
+        discreteSearchSet = 1;
+      }
     }
 
     function setEditBtn(btnObj) {
@@ -791,7 +766,6 @@
     }
 
     function setSelectRows(settings) {
-
       settings.tbody.children(':even').addClass('even');
       settings.tbody.children(':odd').addClass('odd');
 
@@ -854,7 +828,6 @@
                 });
 
               } else {
-
                 trs.each(function () {
                   var tr = $(this), idx = tr.index();
                   if (idx < curIdx && idx > nextIdx) {
@@ -863,26 +836,17 @@
                 });
 
               }
-
             } else { // selected several and then pressed shift+click need to select rows inclusive nearest
-
               var diff1 = Math.abs(curIdx - prevIdx);
-
               var diff2 = Math.abs(curIdx - nextIdx);
 
-//              console.log(curIdx + '  ' + prevIdx + ' ' + nextIdx);
-//              
-//              console.log(diff1 + '  ' + diff2);
-
               if (diff1 <= diff2) {
-
                 trs.each(function () {
                   var tr = $(this), idx = tr.index();
                   if (idx < curIdx && idx > prevIdx) { // fill active from top to current
                     tr.addClass('active');
                   }
                 });
-
               } else {
                 trs.each(function () {
                   var tr = $(this), idx = tr.index();
@@ -891,16 +855,8 @@
                   }
                 });
               }
-
             }
-
-//            console.log(prevIdx);
-//            console.log(nextIdx);
-
           }
-
-//          console.log(cntActive);
-
         }
 
         var cntActive = (trClicked.hasClass('active')) ? 1 : 0;
@@ -909,10 +865,9 @@
             ++cntActive;
           }
         });
-//        console.log(cntActive);
+
         var editBtn = settings.container.find('.gte_button.edit'),
                 deleteBtn = settings.container.find('.gte_button.remove');
-
         if (cntActive === 1) {
           setEditBtn(editBtn);
           setDeleteBtn(deleteBtn);
@@ -924,22 +879,15 @@
             setDeleteBtn(deleteBtn);
           }
         }
-
       });
-
     }
 
     function setPagination(settings, json) {
-
       if (settings.struct.pagination.length > 0) {
-
         var pagination = settings.container.find('.gt_pagination');
-
         var rows = json.length, amount = parseInt(settings.defaultPerPage),
                 pages = Math.ceil(rows / amount);
-
         var fromRow = settings.fromRow ? parseInt(settings.fromRow) : 0;
-
         var pagesDraw = drawPagnButtons(pages, fromRow, amount, pagination);
 
         pagination.remove();
@@ -949,25 +897,19 @@
                 + pagesDraw + '</div><div class="clear"></div></div>';
 
         if (settings.struct.pagination.indexOf('top') !== -1) {
-//          console.log(rows);
           settings.headTools.after(pagesDrawContainer);
         }
 
         if (settings.struct.pagination.indexOf('bottom') !== -1) {
-
           settings.footTools.before(pagesDrawContainer);
         }
         // set event on every page btn
         settings.container.find('.gt_page').click(function () {
-
           var pageObj = $(this);
-
           settings.fromRow = parseInt(pageObj.attr('data-from'));
-
           setTableRows(settings, json);
         });
       }
-
     }
 
     var thead = that.children(":first"),
@@ -1048,7 +990,7 @@
     }).done(function (data) {
       json = data['rows'] ? data['rows'] : data['row']; // one row or several
 //      console.log(Object.keys(json[0]).length + ' ' +cntCols);
-      if (typeof json === 'undefined') {
+      if (typeof json === UNDEFINED) {
         console.error('Put json into rows or row associative key!');
         return false;
       }
@@ -1087,7 +1029,7 @@
         if (settings.columns[idx].discreteSearch === true) {
           var val = 'Search in ' + th.text();
 
-          if (typeof settings.columns[idx].discreteSearchValue !== 'undefined') {
+          if (typeof settings.columns[idx].discreteSearchValue !== UNDEFINED) {
             val = settings.columns[idx].discreteSearchValue(th.text());
             th.removeClass('sorting');
           }

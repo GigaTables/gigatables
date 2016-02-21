@@ -6,11 +6,27 @@ $.fn.GigaTable.Editor = function (options) {
   var that = this;
   var json = null;
 
+  // HTML5 form types
   var TYPE_CHECKBOX = 'checkbox', 
           TYPE_SELECT = 'select',
           TYPE_RADIO = 'radio',
           TYPE_TEXT = 'text', 
-          TYPE_FILE = 'file';
+          TYPE_FILE = 'file', 
+          TYPE_TEXTAREA = 'textarea', 
+          TYPE_HIDDEN = 'hidden', 
+          TYPE_EMAIL = 'email',
+          TYPE_PASSWORD = 'password', 
+          TYPE_COLOR = 'color', 
+          TYPE_DATE = 'date', 
+          TYPE_DATETIME = 'datetime', 
+          TYPE_NUMBER = 'number', 
+          TYPE_RANGE = 'range',
+          TYPE_SEARCH = 'search', 
+          TYPE_TIME = 'time',
+          TYPE_TEL = 'tel',
+          TYPE_URL = 'url', 
+          TYPE_MONTH = 'month',
+          TYPE_WEEK = 'week';
 
   var obj = {
     editorSettings: {},
@@ -270,22 +286,22 @@ $.fn.GigaTable.Editor = function (options) {
               fieldLabel = fields[k].label;
 
       switch (fieldType) {
-        case 'text':
-        case 'hidden':
-        case 'email':
-        case 'password':
-        case 'color':
-        case 'date':
-        case 'datetime':
-        case 'number':
-        case 'range':
-        case 'search':
-        case 'time':
-        case 'tel':
-        case 'url':
-        case 'month':
-        case 'week':
-        case 'file':
+        case TYPE_TEXT:
+        case TYPE_HIDDEN:
+        case TYPE_EMAIL:
+        case TYPE_PASSWORD:
+        case TYPE_COLOR:
+        case TYPE_DATE:
+        case TYPE_DATETIME:
+        case TYPE_NUMBER:
+        case TYPE_RANGE:
+        case TYPE_SEARCH:
+        case TYPE_TIME:
+        case TYPE_TEL:
+        case TYPE_URL:
+        case TYPE_MONTH:
+        case TYPE_WEEK:
+        case TYPE_FILE:
           htmlFieldsCreate += '<div class="gte_editor_fields">';
           htmlFieldsEdit += '<div class="gte_editor_fields">';
           if (fieldType !== 'hidden') {
@@ -295,11 +311,11 @@ $.fn.GigaTable.Editor = function (options) {
           htmlFieldsCreate += '<div class="gte_field"><input id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value=""/></div><div class="clear"></div></div>';
           htmlFieldsEdit += '<div class="gte_field"><input id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value=""/></div><div class="clear"></div></div>';
           break;
-        case 'textarea':
+        case TYPE_TEXTAREA:
           htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><textarea id="' + fieldName + '" name="' + fieldName + '"></textarea></div><div class="clear"></div></div>';
           htmlFieldsEdit += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><textarea id="' + fieldName + '" name="' + fieldName + '"></textarea></div><div class="clear"></div></div>';
           break;
-        case 'select':
+        case TYPE_SELECT:
           var values = fields[k].values;
           var options = '', val = '';
           for (var k in values) {
@@ -315,8 +331,8 @@ $.fn.GigaTable.Editor = function (options) {
                   options
                   + '</select></div><div class="clear"></div></div>';
           break;
-        case 'checkbox':
-        case 'radio':
+        case TYPE_CHECKBOX:
+        case TYPE_RADIO:
           var values = fields[k].values;
           var options = '', val = '';
           for (var k in values) {
