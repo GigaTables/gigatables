@@ -1,0 +1,23 @@
+{
+  "name": "gigatables",
+  "version": "1.2.1",
+  "authors": [
+    "Arthur Kushman <arthurkushman@gmail.com>"
+  ],
+  "description": "GigaTables is a plug-in to help web-developers process data in applications, CMS, CRM, ERP and similar systems.",
+  "main": "jquery.gigatables.js",
+  "keywords": [
+    "gigatables",
+    "jquery",
+    "plug-in",
+    "table",
+    "editor",
+    "tables",
+    "rows",
+    "adding", 
+    "search", 
+    "select"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/GigaTables/gigatables"
+}
