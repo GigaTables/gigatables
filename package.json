@@ -1,0 +1,33 @@
+{
+  "name": "gigatables",
+  "version": "1.2.1",
+  "description": "GigaTables is a plug-in to help web-developers process data in applications and CMS, CRM, ERP or similar systems.",
+  "main": "index.html",
+  "directories": {
+    "test": "src"
+  },
+  "scripts": {
+    "main": "jquery.gigatables.js",
+    "editor": "gigatables.editor.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GigaTables/gigatables.git"
+  },
+  "keywords": [
+    "gigatables",
+    "jquery-plugin",
+    "grid",
+    "ajax",
+    "edit",
+    "add",
+    "delete",
+    "select"
+  ],
+  "author": "Arthur Kushman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GigaTables/gigatables/issues"
+  },
+  "homepage": "https://github.com/GigaTables/gigatables#readme"
+}

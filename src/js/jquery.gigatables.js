@@ -646,12 +646,8 @@
         });
       }
 
-//      console.log('rows' + rows + ', from ' + sets.fromRow);
-//      console.log(jsonStruct);
-      for (var tr = sets.fromRow; tr < rows; ++tr) {
-//        console.log(jsonStruct[tr]['GT_RowId']);
+      for (var tr = sets.fromRow; tr < rows - 1 && (typeof jsonStruct[tr] !== UNDEFINED); tr++) {
         var rowId = 0, active = '';
-//        console.log(jsonStruct[tr]);
         if (typeof jsonStruct[tr]['GT_RowId'] !== UNDEFINED) {
           rowId = jsonStruct[tr]['GT_RowId'];
         } else if (typeof jsonStruct[tr]['id'] !== UNDEFINED) {
@@ -711,11 +707,8 @@
     }
 
     function setEditBtn(btnObj) {
-
       var editorObj = settings.tableOpts.buttons[0].editor;
-
       btnObj.removeClass('gte_btn_disabled');
-
       btnObj.off('click');
 
       btnObj.click(function () {
@@ -724,15 +717,11 @@
         popup.find('.gte_editor_title').text(language.gte_editor_popupheader_edit);
         popup.find('#gte_sent_btn').text(language.gte_editor_sendbtn_update);
       });
-
     }
 
     function setDeleteBtn(btnObj) {
-
       var editorObj = settings.tableOpts.buttons[0].editor;
-
       btnObj.removeClass('gte_btn_disabled');
-
       btnObj.off('click'); // avoid previous set with ex.: 1 row seelcted and then >= 2
 
       btnObj.click(function () {
@@ -752,7 +741,6 @@
         popup.find('#gte_msg').html('Are You sure You wish to delete ' + cntRows + ' rows?');
         popup.find('#gte_ids').html(rowsToDelete);
       });
-
     }
 
     function unsetEditBtn(btnObj) {
@@ -770,11 +758,12 @@
       settings.tbody.children(':odd').addClass('odd');
 
       $(document).keydown(function (event) {
-        if (event.which === 17)
+        if (event.which === 17) {
           cntrlPressed = true;
-
-        if (event.which === 16)
+        }
+        if (event.which === 16) {
           shiftPressed = true;
+        }
       });
 
       $(document).keyup(function () {
@@ -787,7 +776,6 @@
 
       settings.tbody.children().click(function () {
         var trClicked = $(this), trs = trClicked.siblings();
-
         if (cntrlPressed === false && shiftPressed === false) {
           if (trClicked.hasClass('active')) { // 
             trClicked.removeClass('active');
@@ -796,7 +784,6 @@
             trClicked.addClass('active');
           }
         } else {
-
           if (cntrlPressed) {
             if (trClicked.hasClass('active')) { // 
               trClicked.removeClass('active');
@@ -805,7 +792,6 @@
               trClicked.addClass('active');
             }
           } else if (shiftPressed) {
-
 //            $('html').addClass('unselectable');
 
             var prev = trClicked.siblings('.active:first'),
