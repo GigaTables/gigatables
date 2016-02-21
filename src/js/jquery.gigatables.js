@@ -8,6 +8,13 @@
     };
   }
   $.fn.GigaTable = function (options) {
+    var PERIOD_SEARCH = 250, // optimal period to search (onkeyup) for user experiance
+            SORT_ASC = 'asc',
+            SORT_DESC = 'desc',
+            POSITION_TOP = 'top', 
+            POSITION_BOTTOM = 'bottom',
+            UNDEFINED = 'undefined';    
+    
     var that = this,
             json = null,
             struct = {},
@@ -19,21 +26,21 @@
     var lastTimeKeyup = (new Date()).getTime(), nowMillis = 0;
     // if user set some opt to [] - unset opts
     struct.search = [];
-    if (typeof options.struct.search === 'undefined') {
-      struct.search = ['top'];
+    if (typeof options.struct.search === UNDEFINED) {
+      struct.search = [POSITION_TOP];
     } else if (options.struct.search.length > 0) {
       struct.search = options.struct.search;
     }
 
     struct.rowsSelector = [];
-    if (typeof options.struct.rowsSelector === 'undefined') {
-      struct.rowsSelector = ['asc', 'top', 'bottom'];
+    if (typeof options.struct.rowsSelector === UNDEFINED) {
+      struct.rowsSelector = [SORT_ASC, POSITION_TOP, POSITION_BOTTOM];
     } else if (options.struct.rowsSelector.length > 0) {
       struct.rowsSelector = options.struct.rowsSelector;
     }
 
     struct.pagination = [];
-    if (typeof options.struct.pagination === 'undefined') {
+    if (typeof options.struct.pagination === UNDEFINED) {
       struct.pagination = ['bottom'];
     } else if (options.struct.pagination.length > 0) {
       struct.pagination = options.struct.pagination;
@@ -385,7 +392,7 @@
         var objSearch = $(this), val = objSearch.val();
         nowMillis = (new Date()).getTime();
         var period = nowMillis - lastTimeKeyup;
-        if ((period > 200 && val.length > 0) || (val.length === 0 && val === '')) { // do search
+        if ((period > PERIOD_SEARCH && val.length > 0) || (val.length === 0 && val === '')) { // do search
           if (val === '') {
             setTableRows(settings, json);
             return;
