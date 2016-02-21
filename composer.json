@@ -1,0 +1,29 @@
+{
+    "name": "monolog/monolog",
+    "type": "library",
+    "description": "GigaTables is a JQuery plug-in to help web-developers process data in applications and CMS, CRM, ERP or similar systems.",
+    "keywords": [
+      "gigatables",
+      "jquery",
+      "plug-in",
+      "table",
+      "editor",
+      "tables",
+      "rows",
+      "adding", 
+      "search", 
+      "select"      
+    ],
+    "homepage": "https://github.com/GigaTables/gigatables",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arthur Kushman",
+            "email": "arthurkushman@gmail.com",
+            "role": "Programmer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
