@@ -40,7 +40,10 @@
             {
               label: "Article title:",
               name: "title",
-              type: 'text' // default, other: password, file, select, multiselect etc
+              type: 'text', // default, other: password, file, select, multiselect etc
+              attrs: [
+                {'pattern':'^[A-Za-z0-9_]+$'}
+              ]              
             },
             {
               label: "Description:",

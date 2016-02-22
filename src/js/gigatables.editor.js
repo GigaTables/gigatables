@@ -319,12 +319,12 @@ $.fn.GigaTable.Editor = function (options) {
             htmlFieldsCreate += '<label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label>';
             htmlFieldsEdit += '<label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label>';
           }
-          htmlFieldsCreate += '<div class="gte_field"><input id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value=""/></div><div class="clear"></div></div>';
-          htmlFieldsEdit += '<div class="gte_field"><input id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value=""/></div><div class="clear"></div></div>';
+          htmlFieldsCreate += '<div class="gte_field"><input ' + attributes + ' id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value=""/></div><div class="clear"></div></div>';
+          htmlFieldsEdit += '<div class="gte_field"><input ' + attributes + ' id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value=""/></div><div class="clear"></div></div>';
           break;
         case TYPE_TEXTAREA:
-          htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><textarea id="' + fieldName + '" name="' + fieldName + '"></textarea></div><div class="clear"></div></div>';
-          htmlFieldsEdit += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><textarea id="' + fieldName + '" name="' + fieldName + '"></textarea></div><div class="clear"></div></div>';
+          htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><textarea ' + attributes + ' id="' + fieldName + '" name="' + fieldName + '"></textarea></div><div class="clear"></div></div>';
+          htmlFieldsEdit += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><textarea ' + attributes + ' id="' + fieldName + '" name="' + fieldName + '"></textarea></div><div class="clear"></div></div>';
           break;
         case TYPE_SELECT:
           var values = fields[k].values;
@@ -349,7 +349,7 @@ $.fn.GigaTable.Editor = function (options) {
           for (var k in values) {
             for (var key in values[k]) {
               val = values[k][key].trim();
-              options += '<label class="gte_label_text"><input id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value="' + val.toLowerCase() + '">' + val + '</label>';
+              options += '<label class="gte_label_text"><input ' + attributes + ' id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value="' + val.toLowerCase() + '">' + val + '</label>';
             }
           }
           htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label">' + fieldLabel + '</label><div class="gte_field">' +
