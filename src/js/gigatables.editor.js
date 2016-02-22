@@ -6,7 +6,7 @@ $.fn.GigaTable.Editor = function (options) {
   var that = this;
   var json = null;
 
-  var UNDEFINED = 'undefined'
+  var UNDEFINED = 'undefined';
   // HTML5 form types
   var TYPE_CHECKBOX = 'checkbox',
           TYPE_SELECT = 'select',
@@ -71,7 +71,7 @@ $.fn.GigaTable.Editor = function (options) {
 
       var form = settings.container.find('#gte_form');
 
-      if (typeof form.find('input[file]') !== 'undefined') {
+      if (typeof form.find('input[file]') !== UNDEFINED) {
         // there is files - ajax upload them
         var files = [];
         var i = 0;
@@ -82,9 +82,9 @@ $.fn.GigaTable.Editor = function (options) {
 
       settings.container.find('#gte_sent_btn').click(function () {
 //        console.log(that.editorSettings);
-        if (typeof files !== 'undefined' && files !== null) {
+        if (typeof files !== UNDEFINED && files !== null) {
           var ajaxDest = obj.editorSettings.ajaxFiles;
-          if (ajaxDest === 'undefined' || ajaxDest === null
+          if (ajaxDest === UNDEFINED || ajaxDest === null
                   || ajaxDest === '') {
             console.error('You should secify ajaxFiles url to upload files on server.');
             return;
@@ -125,10 +125,10 @@ $.fn.GigaTable.Editor = function (options) {
             var id = 0;
             var tr = '<tr ';
 
-            if (typeof data['row']['GT_RowId'] !== 'undefined') {
+            if (typeof data['row']['GT_RowId'] !== UNDEFINED) {
               id = data['row']['GT_RowId'];
               tr += ' gte-row-id="' + id + '" ';
-            } else if (typeof data['row']['GT_RowId'] !== 'undefined') {
+            } else if (typeof data['row']['GT_RowId'] !== UNDEFINED) {
               id = data['row']['id'];
               tr += ' gte-row-id="' + id + '" ';
             }
@@ -268,7 +268,7 @@ $.fn.GigaTable.Editor = function (options) {
             popupDelete = '',
             popupBackground = '';
 
-    if (typeof settings.fields === 'undefined') {
+    if (typeof settings.fields === UNDEFINED) {
       console.err('You should define "fields" option.');
       return;
     }
