@@ -6,25 +6,26 @@ $.fn.GigaTable.Editor = function (options) {
   var that = this;
   var json = null;
 
+  var UNDEFINED = 'undefined'
   // HTML5 form types
-  var TYPE_CHECKBOX = 'checkbox', 
+  var TYPE_CHECKBOX = 'checkbox',
           TYPE_SELECT = 'select',
           TYPE_RADIO = 'radio',
-          TYPE_TEXT = 'text', 
-          TYPE_FILE = 'file', 
-          TYPE_TEXTAREA = 'textarea', 
-          TYPE_HIDDEN = 'hidden', 
+          TYPE_TEXT = 'text',
+          TYPE_FILE = 'file',
+          TYPE_TEXTAREA = 'textarea',
+          TYPE_HIDDEN = 'hidden',
           TYPE_EMAIL = 'email',
-          TYPE_PASSWORD = 'password', 
-          TYPE_COLOR = 'color', 
-          TYPE_DATE = 'date', 
-          TYPE_DATETIME = 'datetime', 
-          TYPE_NUMBER = 'number', 
+          TYPE_PASSWORD = 'password',
+          TYPE_COLOR = 'color',
+          TYPE_DATE = 'date',
+          TYPE_DATETIME = 'datetime',
+          TYPE_NUMBER = 'number',
           TYPE_RANGE = 'range',
-          TYPE_SEARCH = 'search', 
+          TYPE_SEARCH = 'search',
           TYPE_TIME = 'time',
           TYPE_TEL = 'tel',
-          TYPE_URL = 'url', 
+          TYPE_URL = 'url',
           TYPE_MONTH = 'month',
           TYPE_WEEK = 'week';
 
@@ -187,8 +188,8 @@ $.fn.GigaTable.Editor = function (options) {
     },
     triggerPopupEdit: function (settings) {
       var field = null, fieldName = null,
-              fieldType = null, fieldValue = null;      
-      
+              fieldType = null, fieldValue = null;
+
       settings.container.append(this.popup.edit);
       settings.container.append(this.popup.background);
 
@@ -199,13 +200,13 @@ $.fn.GigaTable.Editor = function (options) {
 
       for (var k in fields) {
         fieldName = fields[k].name;
-        fieldType = fields[k].type;        
+        fieldType = fields[k].type;
         field = trActive.children('td[data-name="' + fieldName + '"]');
         fieldValue = field.text().trim();
         if (field.length > 0 && fieldType !== 'file') { // file value protection avoiding "The operation is insecure" error         
           var selectors = ['select', 'checkbox', 'radio']; // making these elements selected         
-          if (selectors.indexOf(fieldType) !== -1) {            
-            if (fieldType === 'select') { 
+          if (selectors.indexOf(fieldType) !== -1) {
+            if (fieldType === 'select') {
               popup.find(fieldType + '[name="' + fieldName + '"] option[data-value="' + fieldValue.toLowerCase() + '"]').attr('selected', true);
             } else { // checkbox/radio
               popup.find('input[name="' + fieldName + '"][data-value="' + fieldValue.toLowerCase() + '"]').attr('checked', true);
@@ -285,6 +286,16 @@ $.fn.GigaTable.Editor = function (options) {
               fieldName = fields[k].name,
               fieldLabel = fields[k].label;
 
+      var attributes = '';
+      if (typeof fields[k].attrs !== UNDEFINED) {
+        var fieldOpts = fields[k].attrs;
+        for (var opt in fieldOpts) {
+          for (var attr in fieldOpts[opt]) {
+            attributes += attr + '="' + fieldOpts[opt][attr] + '"';
+          }
+        }
+      }
+
       switch (fieldType) {
         case TYPE_TEXT:
         case TYPE_HIDDEN:
@@ -321,13 +332,13 @@ $.fn.GigaTable.Editor = function (options) {
           for (var k in values) {
             for (var key in values[k]) {
               val = values[k][key].trim();
-              options += '<option value="' + key + '" data-value="'+val.toLowerCase()+'">' + val + '</option>';
+              options += '<option value="' + key + '" data-value="' + val.toLowerCase() + '">' + val + '</option>';
             }
           }
-          htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><select id="' + fieldName + '" name="' + fieldName + '">' +
+          htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><select ' + attributes + ' id="' + fieldName + '" name="' + fieldName + '">' +
                   options
                   + '</select></div><div class="clear"></div></div>';
-          htmlFieldsEdit += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><select id="' + fieldName + '" name="' + fieldName + '">' +
+          htmlFieldsEdit += '<div class="gte_editor_fields"><label class="gte_label" for="' + fieldName + '">' + fieldLabel + '</label><div class="gte_field"><select ' + attributes + ' id="' + fieldName + '" name="' + fieldName + '">' +
                   options
                   + '</select></div><div class="clear"></div></div>';
           break;
@@ -338,7 +349,7 @@ $.fn.GigaTable.Editor = function (options) {
           for (var k in values) {
             for (var key in values[k]) {
               val = values[k][key].trim();
-              options += '<label class="gte_label_text"><input id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value="'+val.toLowerCase()+'">' + val + '</label>';
+              options += '<label class="gte_label_text"><input id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value="' + val.toLowerCase() + '">' + val + '</label>';
             }
           }
           htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label">' + fieldLabel + '</label><div class="gte_field">' +
@@ -346,7 +357,7 @@ $.fn.GigaTable.Editor = function (options) {
                   + '</div><div class="clear"></div></div>';
           htmlFieldsEdit += '<div class="gte_editor_fields"><label class="gte_label">' + fieldLabel + '</label><div class="gte_field">' +
                   options
-                  + '</div><div class="clear"></div></div>';          
+                  + '</div><div class="clear"></div></div>';
           break;
       }
     }
