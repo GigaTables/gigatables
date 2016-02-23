@@ -204,7 +204,10 @@ First of all You should define a class Editor like this:
                   {'key1':'val1'}, 
                   {'key2':'val2'}
               ],            
-              type: 'select' // select,checkbox,radio
+              type: 'select', // select,checkbox,radio
+              attrs: [
+                {'multiple':true}
+              ]
             },
             {
               label: "Image:",
