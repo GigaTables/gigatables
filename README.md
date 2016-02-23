@@ -293,4 +293,4 @@ additionally U may want to set a custom placeholder - it is possible via *discre
 
 **Is there languages support?**
 
-Sure, You can pick one of 7 languages: English, German, Russian, French, Spanish, Chinese, Hindi - en, gr, ru, fr, es, ch, hi respectively.
+Sure, You can pick one of 7 languages: English, German, Russian, French, Spanish, Chinese, Hindi - en, gr, ru, fr, es, ch, hi respectively.   
