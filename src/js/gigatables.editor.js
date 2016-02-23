@@ -73,8 +73,7 @@ $.fn.GigaTable.Editor = function (options) {
     },
     sendAjaxEvent: function (settings, action) {
       var that = this;
-
-      var form = settings.container.find('#gte_form');
+      var form = settings.container.find('#gte_form'), sendBtn = settings.container.find('#gte_sent_btn');
 
       if (typeof form.find('input[file]') !== UNDEFINED) {
         // there is files - ajax upload them
@@ -85,7 +84,7 @@ $.fn.GigaTable.Editor = function (options) {
         });
       }
 
-      settings.container.find('#gte_sent_btn').click(function () {
+      sendBtn.click(function () {
 //        console.log(that.editorSettings);
         if (typeof files !== UNDEFINED && files !== null) {
           var ajaxDest = obj.editorSettings.ajaxFiles;
@@ -175,6 +174,13 @@ $.fn.GigaTable.Editor = function (options) {
           that.hidePopUp(settings);
         });
       });
+      
+      // trigger click on send button when user press Enter key
+      $(document).keydown(function (e) {
+        if (e.which === ENTER_KEY) {
+          sendBtn.trigger('click');
+        }
+      });      
     },
     triggerPopupCreate: function (settings) {
       settings.container.append(this.popup.create);
