@@ -17,6 +17,10 @@
             // opts
             SELECTED = 'selected',
             CHECKED = 'checked';
+    
+    var CNTRL_KEY = 17, 
+            SHIFT_KEY = 16,
+            ENTER_KEY = 13;
 
     var that = this,
             json = null,
@@ -758,10 +762,10 @@
       settings.tbody.children(':odd').addClass('odd');
 
       $(document).keydown(function (event) {
-        if (event.which === 17) {
+        if (event.which === CNTRL_KEY) {
           cntrlPressed = true;
         }
-        if (event.which === 16) {
+        if (event.which === SHIFT_KEY) {
           shiftPressed = true;
         }
       });

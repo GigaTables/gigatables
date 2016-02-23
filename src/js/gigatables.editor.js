@@ -29,6 +29,9 @@ $.fn.GigaTable.Editor = function (options) {
           TYPE_MONTH = 'month',
           TYPE_WEEK = 'week';
 
+  var ESCAPE_KEY = 27, 
+          ENTER_KEY = 13;
+
   var obj = {
     editorSettings: {},
     popupWindow: null,
@@ -55,7 +58,9 @@ $.fn.GigaTable.Editor = function (options) {
         that.hidePopUp(settings);
       });
       $(document).keydown(function (e) {
-        that.hidePopUp(settings);
+        if (e.which === ESCAPE_KEY) {
+          that.hidePopUp(settings);
+        }
       });
       popup.find('.close').click(function () {
         that.hidePopUp(settings);
