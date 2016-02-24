@@ -32,6 +32,8 @@ $.fn.GigaTable.Editor = function (options) {
   var ESCAPE_KEY = 27, 
           ENTER_KEY = 13;
 
+  var ACTION_CREATE = 'create', ACTION_EDIT = 'edit', ACTION_DELETE = 'delete';
+
   var obj = {
     editorSettings: {},
     popupWindow: null,
@@ -123,16 +125,15 @@ $.fn.GigaTable.Editor = function (options) {
           dataType: 'json'
         }).done(function (data) {
 //          console.log(data);
-          if (action === 'create') {
-            var tbody = settings.container.find('tbody'),
-                    columns = settings.columns; // GT columns not GTE
+          if (action === ACTION_CREATE) {
+            var columns = settings.columns; // GT columns not GTE
             var id = 0;
             var tr = '<tr ';
 
             if (typeof data['row']['GT_RowId'] !== UNDEFINED) {
               id = data['row']['GT_RowId'];
               tr += ' gte-row-id="' + id + '" ';
-            } else if (typeof data['row']['GT_RowId'] !== UNDEFINED) {
+            } else if (typeof data['row']['id'] !== UNDEFINED) {
               id = data['row']['id'];
               tr += ' gte-row-id="' + id + '" ';
             }
@@ -143,29 +144,28 @@ $.fn.GigaTable.Editor = function (options) {
               tr += '<td>' + data['row'][columns[k].data] + '</td>';
             }
             tr += '</tr>';
-            tbody.prepend(tr);
-
+            settings.container.find('tbody').prepend(tr);
+//            settings.setSelectedRows(settings);
 //            tbody.find('tr:first').animate({
 //              backgroundColor: '#08c !important'
 //            }, 1000);
 
-          } else if (action === 'edit') {
+          } else if (action === ACTION_EDIT) {
             var tbody = settings.container.find('tbody'),
                     columns = settings.columns; // GT columns not GTE            
             var tr = tbody.find('tr.active'); // there is only 1 tr active for editor            
             var tds = '';
 
             for (var k in columns) {
-//              console.log(fields[k].name);              
               tds += '<td>' + data['row'][columns[k].data] + '</td>';
-
             }
             tr.html(tds);
+//            settings.setSelectedRows(settings);
 //            tr.animate({
 //              backgroundColor:'#fff !important'
 //            }, 1000);
 
-          } else if (action === 'delete') {
+          } else if (action === ACTION_DELETE) {
             var ids = settings.container.find('#gte_form input[name^="ids"]');
             ids.each(function () {
               settings.container.find('tbody tr[gte-row-id=' + $(this).val() + ']').remove();
@@ -195,7 +195,7 @@ $.fn.GigaTable.Editor = function (options) {
       bg.fadeIn(300);
 
       this.hidePopupEvents(settings);
-      this.sendAjaxEvent(settings, 'create');
+      this.sendAjaxEvent(settings, ACTION_CREATE);
     },
     triggerPopupEdit: function (settings) {
       var field = null, fieldName = null,
@@ -207,8 +207,8 @@ $.fn.GigaTable.Editor = function (options) {
       var popup = settings.container.find('.gte_editor_popup'),
               bg = settings.container.find('.gte_popup_background');
       var fields = this.editorSettings.fields,
-              trActive = settings.tbody.find('tr.active');
-
+//              trActive = settings.tbody.find('tr.active');
+          trActive = settings.tbody.find('tr.active');
       for (var k in fields) {
         fieldName = fields[k].name;
         fieldType = fields[k].type;
@@ -234,7 +234,7 @@ $.fn.GigaTable.Editor = function (options) {
       bg.fadeIn(300);
 
       this.hidePopupEvents(settings);
-      this.sendAjaxEvent(settings, 'edit');
+      this.sendAjaxEvent(settings, ACTION_EDIT);
     },
     triggerPopupDelete: function (settings) {
       settings.container.append(this.popup.delete);
@@ -249,7 +249,7 @@ $.fn.GigaTable.Editor = function (options) {
       bg.fadeIn(300);
 
       this.hidePopupEvents(settings);
-      this.sendAjaxEvent(settings, 'delete');
+      this.sendAjaxEvent(settings, ACTION_DELETE);
     }
   };
 

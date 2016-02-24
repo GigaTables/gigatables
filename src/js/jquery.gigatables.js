@@ -210,7 +210,9 @@
         theme: 'std'
       }
     }, options);
-
+    
+    // to make it easy to call from editor when rows added/edited
+    settings.setSelectedRows = setSelectRows;
     // set language
     switch (settings.lang) {
       case 'gr':
@@ -972,7 +974,7 @@
     settings.footTools = footTools;
     settings.container = container;
     settings.fromRow = 0;
-
+    
     $.ajax({
       url: settings.ajax,
       type: 'GET',

@@ -15,7 +15,7 @@ tbody {
   color:#333;
 }
 tbody tr {
-  cursor:pointer;
+  cursor:default;
   border-collapse: collapse;
   border-top:1px solid #ddd;
 }
@@ -36,6 +36,8 @@ td {
   word-wrap: break-word;
   min-width: 50px;
   min-height: 20px;
+  cursor:text;
+  box-sizing: content-box;
 }
 .gt_head {
   border: 0;
