@@ -21,10 +21,11 @@ tbody tr {
 }
 tbody tr.active {
   /*background-color:#08c;*/
-  background-color:#08c !important;
+  /*background-color:#08c !important;*/
+  background-color:#25adf1 !important;
 }
 tbody tr.active:hover {
-  background-color:#0075b0 !important;
+  background-color:#1098dc !important;
 }
 tbody tr.even {
   background-color:#fff;
