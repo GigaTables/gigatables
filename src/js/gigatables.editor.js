@@ -29,7 +29,7 @@ $.fn.GigaTable.Editor = function (options) {
           TYPE_MONTH = 'month',
           TYPE_WEEK = 'week';
 
-  var ESCAPE_KEY = 27, 
+  var ESCAPE_KEY = 27,
           ENTER_KEY = 13;
 
   var ACTION_CREATE = 'create', ACTION_EDIT = 'edit', ACTION_DELETE = 'delete';
@@ -140,8 +140,7 @@ $.fn.GigaTable.Editor = function (options) {
             tr += '>';
 
             for (var k in columns) {
-//              console.log(fields[k].name);              
-              tr += '<td>' + data['row'][columns[k].data] + '</td>';
+              tr += '<td data-name="'+columns[k].data+'">' + data['row'][columns[k].data] + '</td>';
             }
             tr += '</tr>';
             settings.container.find('tbody').prepend(tr);
@@ -157,7 +156,7 @@ $.fn.GigaTable.Editor = function (options) {
             var tds = '';
 
             for (var k in columns) {
-              tds += '<td>' + data['row'][columns[k].data] + '</td>';
+              tds += '<td data-name="'+columns[k].data+'">' + data['row'][columns[k].data] + '</td>';
             }
             tr.html(tds);
             settings.setSelectedRows(settings, 1);
@@ -174,13 +173,13 @@ $.fn.GigaTable.Editor = function (options) {
           that.hidePopUp(settings);
         });
       });
-      
+
       // trigger click on send button when user press Enter key
       $(document).keydown(function (e) {
         if (e.which === ENTER_KEY) {
           sendBtn.trigger('click');
         }
-      });      
+      });
     },
     triggerPopupCreate: function (settings) {
       settings.container.append(this.popup.create);
@@ -207,8 +206,8 @@ $.fn.GigaTable.Editor = function (options) {
       var popup = settings.container.find('.gte_editor_popup'),
               bg = settings.container.find('.gte_popup_background');
       var fields = this.editorSettings.fields,
-//              trActive = settings.tbody.find('tr.active');
-          trActive = settings.tbody.find('tr.active');
+              trActive = settings.tbody.find('tr.active');
+//      console.log(trActive.children());
       for (var k in fields) {
         fieldName = fields[k].name;
         fieldType = fields[k].type;
