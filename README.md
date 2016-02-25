@@ -2,6 +2,12 @@
 GigaTables is a plug-in to help web-developers process data in applications and CMS, CRM, ERP or similar systems. 
 Unlike other JQuery-based tables (which earn money from CRUD operations) it is under MIT license - totally free
 
+### Supported package managers
+
+- npm install gigatables
+- bower install gigatables (--allow-root, for sudo)
+- composer require gt/gigatables
+
 ## Installation
 ```HTML
     <script src="jquery.js"></script>
