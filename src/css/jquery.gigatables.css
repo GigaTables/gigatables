@@ -36,7 +36,7 @@ td {
   word-wrap: break-word;
   min-width: 50px;
   min-height: 20px;
-  cursor:text;
+  cursor:default;
   box-sizing: content-box;
 }
 .gt_head {

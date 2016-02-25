@@ -145,7 +145,7 @@ $.fn.GigaTable.Editor = function (options) {
             }
             tr += '</tr>';
             settings.container.find('tbody').prepend(tr);
-//            settings.setSelectedRows(settings);
+            settings.setSelectedRows(settings, 1);
 //            tbody.find('tr:first').animate({
 //              backgroundColor: '#08c !important'
 //            }, 1000);
@@ -160,7 +160,7 @@ $.fn.GigaTable.Editor = function (options) {
               tds += '<td>' + data['row'][columns[k].data] + '</td>';
             }
             tr.html(tds);
-//            settings.setSelectedRows(settings);
+            settings.setSelectedRows(settings, 1);
 //            tr.animate({
 //              backgroundColor:'#fff !important'
 //            }, 1000);

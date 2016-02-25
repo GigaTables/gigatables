@@ -17,8 +17,8 @@
             // opts
             SELECTED = 'selected',
             CHECKED = 'checked';
-    
-    var CNTRL_KEY = 17, 
+
+    var CNTRL_KEY = 17,
             SHIFT_KEY = 16,
             ENTER_KEY = 13;
 
@@ -29,7 +29,7 @@
             invisibleCols = [],
             unsearchableCols = [];
     // flags
-    var searchSet = 0, discreteSearchSet = 0;        
+    var searchSet = 0, discreteSearchSet = 0;
 
     var sortTimeout = null, searchTimeout = null;
     var lastTimeKeyup = (new Date()).getTime(), nowMillis = 0;
@@ -210,7 +210,7 @@
         theme: 'std'
       }
     }, options);
-    
+
     // to make it easy to call from editor when rows added/edited
     settings.setSelectedRows = setSelectRows;
     // set language
@@ -625,7 +625,7 @@
 
       // clear timeouts
       clearTimeout(sortTimeout);
-      setSelectRows(sets);
+      setSelectRows(sets, 1);
     }
 
     // helpers
@@ -697,8 +697,8 @@
       sets.tbody.html(tBody);
       // clear timeouts      
       clearTimeout(searchTimeout);
-      
-      setSelectRows(sets);
+
+      setSelectRows(sets, 0);
       setPagination(sets, json); // depends on per page select, search and sorts
       setPgnSelect(settings, json);
       // @warning - avoids recursive set of events
@@ -707,7 +707,7 @@
         searchSet = 1;
       }
       if (discreteSearchSet === 0) {
-        setDiscreteSearch(settings, json);        
+        setDiscreteSearch(settings, json);
         discreteSearchSet = 1;
       }
     }
@@ -759,23 +759,28 @@
       btnObj.off('click');
     }
 
-    function setSelectRows(settings) {
+    function setSelectRows(settings, isSet) {
+      if (isSet) { // than reset
+        settings.tbody.children().removeClass('even').removeClass('odd');
+        settings.tbody.children().off('click');
+      } else {
+        $(document).keydown(function (event) {
+          if (event.which === CNTRL_KEY) {
+            cntrlPressed = true;
+          }
+          if (event.which === SHIFT_KEY) {
+            shiftPressed = true;
+          }
+        });
+
+        $(document).keyup(function () {
+          cntrlPressed = false;
+          shiftPressed = false;
+        });
+      }
+
       settings.tbody.children(':even').addClass('even');
       settings.tbody.children(':odd').addClass('odd');
-
-      $(document).keydown(function (event) {
-        if (event.which === CNTRL_KEY) {
-          cntrlPressed = true;
-        }
-        if (event.which === SHIFT_KEY) {
-          shiftPressed = true;
-        }
-      });
-
-      $(document).keyup(function () {
-        cntrlPressed = false;
-        shiftPressed = false;
-      });
 
       var cntrlPressed = false,
               shiftPressed = false;
@@ -974,7 +979,7 @@
     settings.footTools = footTools;
     settings.container = container;
     settings.fromRow = 0;
-    
+
     $.ajax({
       url: settings.ajax,
       type: 'GET',
