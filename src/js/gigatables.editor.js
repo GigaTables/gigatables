@@ -140,7 +140,7 @@ $.fn.GigaTable.Editor = function (options) {
             tr += '>';
 
             for (var k in columns) {
-              tr += '<td data-name="'+columns[k].data+'">' + data['row'][columns[k].data] + '</td>';
+              tr += '<td data-name="' + columns[k].data + '">' + data['row'][columns[k].data] + '</td>';
             }
             tr += '</tr>';
             settings.container.find('tbody').prepend(tr);
@@ -156,7 +156,7 @@ $.fn.GigaTable.Editor = function (options) {
             var tds = '';
 
             for (var k in columns) {
-              tds += '<td data-name="'+columns[k].data+'">' + data['row'][columns[k].data] + '</td>';
+              tds += '<td data-name="' + columns[k].data + '">' + data['row'][columns[k].data] + '</td>';
             }
             tr.html(tds);
             settings.setSelectedRows(settings, 1);
@@ -213,7 +213,7 @@ $.fn.GigaTable.Editor = function (options) {
         fieldType = fields[k].type;
         field = trActive.children('td[data-name="' + fieldName + '"]');
         fieldValue = field.text().trim();
-        if (field.length > 0 && fieldType !== 'file') { // file value protection avoiding "The operation is insecure" error         
+        if (field.length > 0 && fieldType !== TYPE_FILE) { // file value protection avoiding "The operation is insecure" error         
           var selectors = ['select', 'checkbox', 'radio']; // making these elements selected         
           if (selectors.indexOf(fieldType) !== -1) {
             if (fieldType === 'select') {
@@ -223,6 +223,9 @@ $.fn.GigaTable.Editor = function (options) {
             }
           } else {
             popup.find('input[name="' + fieldName + '"]').val(fieldValue);
+          }
+          if (fieldType === TYPE_TEXTAREA) {
+            popup.find(TYPE_TEXTAREA + '[name="' + fieldName + '"]').text(fieldValue);
           }
         }
       }
