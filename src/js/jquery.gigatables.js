@@ -8,7 +8,8 @@
     };
   }
   $.fn.GigaTable = function (options) {
-    var PERIOD_SEARCH = 250, // optimal period to search (onkeyup) for user experiance
+    var PERIOD_SEARCH = 200, // optimal period to search (onkeyup) for user experiance
+            TIMEOUT_SEARCH = 300,
             SORT_ASC = 'asc',
             SORT_DESC = 'desc',
             POSITION_TOP = 'top',
@@ -33,6 +34,7 @@
 
     var sortTimeout = null, searchTimeout = null;
     var lastTimeKeyup = (new Date()).getTime(), nowMillis = 0;
+    var lastTimeKeyupDiscrete = (new Date()).getTime(), nowMillisDiscrete = 0;
     // if user set some opt to [] - unset opts
     struct.search = [];
     if (typeof options.struct.search === UNDEFINED) {
@@ -384,11 +386,13 @@
 
     function setSearch(settings, json) {
       var nothing = false;
+      var tOut = [], c = 0;
       settings.container.find('.gt_search').keyup(function () {
         var objSearch = $(this), val = objSearch.val(), len = val.length;
         nowMillis = (new Date()).getTime();
         var period = nowMillis - lastTimeKeyup;
-        if ((period > PERIOD_SEARCH && len > 0) || (len === 0 && val === '')) { // do search
+//        console.log(period);
+        if (len > 0 || (len === 0 && val === '')) { // do search          
           if (nothing === true && val === '') {
             return; // exit coz user pressed not a symbol keys 
           }
@@ -410,42 +414,73 @@
               }
             }
           }
-          setTableRows(settings, json, nJson);
+          if (period > PERIOD_SEARCH) {// show quick results and tear down all timeouts if they are present
+            for (var j in tOut) {
+              clearTimeout(tOut[j]);
+            }            
+            tOut = [];
+            c= 0;
+            setTableRows(settings, json, nJson);
+          } else {
+            tOut[c] = setTimeout(function() {
+              setTableRows(settings, json, nJson);
+            }, TIMEOUT_SEARCH);
+            c++;
+          }
           nothing = false;
         }
         lastTimeKeyup = nowMillis;
       });
     }
 
-    function setDiscreteSearch(settings, json) {
+    function setDiscreteSearch(settings, json) { //@fixme - remove timeout like in setSearch
+      var nothing = false;
+      var tOut = [], c = 0;
       settings.tfoot.find('th input').keyup(function () {
-        var objSearch = $(this), val = objSearch.val(), idx = objSearch.parent().index();
+        var objSearch = $(this), val = objSearch.val(), len = val.length, idx = objSearch.parent().index();
+        nowMillisDiscrete = (new Date()).getTime();
+        var period = nowMillisDiscrete - lastTimeKeyupDiscrete;
+        if ((period > PERIOD_SEARCH && len > 0) || (len === 0 && val === '')) { // do search
+          if (nothing === true && val === '') {
+            return; // exit coz user pressed not a symbol keys 
+          }
 
-        searchTimeout = setTimeout(function () {
-          if (val.length > 1 || (val.length === 0 && val === '')) { // do search
-            if (val === '') {
-              setTableRows(settings, json);
-              return;
-            }
+          if (nothing === false && val === '') { // rebuild full table if teared down
+            setTableRows(settings, json);
+            nothing = true;
+            return;
+          }
 
-            var nJson = [], str = '', i = 0;
-            for (var key in json) {
-              for (var k in json[key]) {
-//                console.log(unsearchableCols[k]);
-                if (k !== 'GT_RowId' && unsearchableCols[k] === true
-                        && settings.columns[idx].data === k) { // do not search unsearchable
-                  str = json[key][k] + '';
-                  if (str.indexOf(val) !== -1) {
-                    nJson[i] = json[key];
-                    ++i;
-                    break;
-                  }
+          var nJson = [], str = '', i = 0;
+          for (var key in json) {
+            for (var k in json[key]) {
+              if (k !== 'GT_RowId' && unsearchableCols[k] === true
+                      && settings.columns[idx].data === k) { // do not search unsearchable                  
+                str = json[key][k] + '';
+                if (str.indexOf(val) !== -1) {
+                  nJson[i] = json[key];
+                  ++i;
+                  break;
                 }
               }
             }
+          }          
+          if (period > PERIOD_SEARCH) {// show quick results and tear down all timeouts if they are present
+            for (var j in tOut) {
+              clearTimeout(tOut[j]);
+            }            
+            tOut = [];
+            c= 0;
             setTableRows(settings, json, nJson);
-          }
-        }, 300);
+          } else {
+            tOut[c] = setTimeout(function() {
+              setTableRows(settings, json, nJson);
+            }, TIMEOUT_SEARCH);
+            c++;
+          }          
+          nothing = false;
+        }
+        lastTimeKeyupDiscrete = nowMillisDiscrete;
       });
     }
 
@@ -651,8 +686,8 @@
           trActives[tra] = tra;
         });
       }
-
-      for (var tr = sets.fromRow; tr < rows - 1 && (typeof jsonStruct[tr] !== UNDEFINED); tr++) {
+//      console.log(jsonStruct + ' ' + rows + ' ' + sets.fromRow);
+      for (var tr = sets.fromRow; tr <= rows - 1 && (typeof jsonStruct[tr] !== UNDEFINED); tr++) {
         var rowId = 0, active = '';
         if (typeof jsonStruct[tr]['GT_RowId'] !== UNDEFINED) {
           rowId = jsonStruct[tr]['GT_RowId'];
@@ -688,8 +723,9 @@
           }
         } else {
           for (var td in jsonStruct[tr]) {
-            if (td !== 'GT_RowId' && invisibleCols[td] === true)
+            if (td !== 'GT_RowId' && invisibleCols[td] === true) {
               tBody += '<td data-name="' + td + '">' + jsonStruct[tr][td] + '</td>';
+            }
           }
         }
         tBody += '</tr>';
