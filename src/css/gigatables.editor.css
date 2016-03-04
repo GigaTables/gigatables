@@ -16,7 +16,6 @@ label {
   padding: 5px 8px;
   position: relative;  
   float:left;
-
   background: #ffffff; /* Old browsers */
   background: -webkit-linear-gradient(top, #ffffff 0%,#f9f9f9 89%,#fafafa 100%); /* Chrome10+,Safari5.1+ */
   background:    -moz-linear-gradient(top, #ffffff 0%,#f9f9f9 89%,#fafafa 100%); /* FF3.6+ */
@@ -24,7 +23,6 @@ label {
   background:      -o-linear-gradient(top, #ffffff 0%,#f9f9f9 89%,#fafafa 100%); /* Opera 11.10+ */
   background:         linear-gradient(top, #ffffff 0%,#f9f9f9 89%,#fafafa 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fafafa',GradientType=0 ); /* IE6-9 */    
-
 }
 .gte_button:hover:not(.gte_btn_disabled) {
   border: 1px solid #666; 
