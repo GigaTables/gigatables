@@ -352,22 +352,21 @@
               var isNan = 0,
                       check = 0;
 
-              nJson.sort(function (a, b) {
-
+              /*nJson.sort(function (a, b) {
                 a = eval('a.' + cols[idx].data) + '';
                 b = eval('b.' + cols[idx].data) + '';
 
                 if (check === 0) { // check just the 1st time
-                  if (isNaN(a - b))
+                  if (isNaN(a - b)) {
                     isNan = 1;
-
+                  }
                   check = 1;
                 }
 
                 if (sortingOrder === 1) { // asc
-                  if (isNan & 1)
+                  if (isNan & 1) {
                     return a.localeCompare(b);
-
+                  }
                   return a - b;
                 } else { // desc
                   if (isNan & 1)
@@ -375,7 +374,44 @@
 
                   return b - a;
                 }
-              });
+              });*/
+              // ===========
+              if (sortingOrder === 1) { // asc
+                nJson.sort(function (a, b) {
+                  a = eval('a.' + cols[idx].data) + '';
+                  b = eval('b.' + cols[idx].data) + '';
+
+                  if (check === 0) { // check just the 1st time
+                    if (isNaN(a - b)) {
+                      isNan = 1;
+                    }
+                    check = 1;
+                  }
+
+                  if (isNan) {
+                    return a.localeCompare(b);
+                  }
+                  return a - b;
+                });
+              } else { // desc
+                nJson.sort(function (a, b) {
+                  a = eval('a.' + cols[idx].data) + '';
+                  b = eval('b.' + cols[idx].data) + '';
+
+
+                  if (check === 0) { // check just the 1st time
+                    if (isNaN(a - b)) {
+                      isNan = 1;
+                    }
+                    check = 1;
+                  }
+
+                  if (isNan) {
+                    return b.localeCompare(a);
+                  }
+                  return b - a;
+                });
+              }
               setTableSort(settings, nJson);
             }, 50); // silly pressing buttons protection
           });
@@ -417,12 +453,12 @@
           if (period > PERIOD_SEARCH) {// show quick results and tear down all timeouts if they are present
             for (var j in tOut) {
               clearTimeout(tOut[j]);
-            }            
+            }
             tOut = [];
-            c= 0;
+            c = 0;
             setTableRows(settings, json, nJson);
           } else {
-            tOut[c] = setTimeout(function() {
+            tOut[c] = setTimeout(function () {
               setTableRows(settings, json, nJson);
             }, TIMEOUT_SEARCH);
             c++;
@@ -464,20 +500,20 @@
                 }
               }
             }
-          }          
+          }
           if (period > PERIOD_SEARCH) {// show quick results and tear down all timeouts if they are present
             for (var j in tOut) {
               clearTimeout(tOut[j]);
-            }            
+            }
             tOut = [];
-            c= 0;
+            c = 0;
             setTableRows(settings, json, nJson);
           } else {
-            tOut[c] = setTimeout(function() {
+            tOut[c] = setTimeout(function () {
               setTableRows(settings, json, nJson);
             }, TIMEOUT_SEARCH);
             c++;
-          }          
+          }
           nothing = false;
         }
         lastTimeKeyupDiscrete = nowMillisDiscrete;
