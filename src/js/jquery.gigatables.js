@@ -397,8 +397,6 @@
                 nJson.sort(function (a, b) {
                   a = eval('a.' + cols[idx].data) + '';
                   b = eval('b.' + cols[idx].data) + '';
-
-
                   if (check === 0) { // check just the 1st time
                     if (isNaN(a - b)) {
                       isNan = 1;
@@ -685,13 +683,36 @@
           active = 'active';
 
         tBody += '<tr class="' + active + '" gte-row-id="' + rowId + '">';
-        for (var td in jsonStruct[tr]) {
-          if (td !== 'GT_RowId' && invisibleCols[td] === true)
-            tBody += '<td data-name="' + td + '">' + jsonStruct[tr][td] + '</td>';
+        var colOpts = settings.columnOpts, setColumns = sets.columns;
+        if (colOpts.length > 0) {
+          var col = 0, content = '';
+          for (var colIdx in setColumns) {
+            var td = setColumns[colIdx].data;
+            if (td !== 'GT_RowId' && invisibleCols[td] === true) {
+              content = jsonStruct[tr][td];
+              for (var k in colOpts) {
+                if (typeof colOpts[k].render !== UNDEFINED && colOpts[k].target === col) { // got some render user defined func
+                  var row = {
+                    id: rowId
+                  };
+                  var type = 'string';
+                  content = colOpts[k].render(content, row, type);
+                }
+              }
+              tBody += '<td data-name="' + td + '">' + content + '</td>';
+            }
+            ++col;
+          }
+        } else {
+          for (var colIdx in setColumns) {
+            var td = setColumns[colIdx].data;
+            if (td !== 'GT_RowId' && invisibleCols[td] === true) {
+              tBody += '<td data-name="' + td + '">' + jsonStruct[tr][td] + '</td>';
+            }
+          }
         }
         tBody += '</tr>';
       }
-
       sets.tbody.html(tBody);
 
       // clear timeouts
@@ -738,29 +759,29 @@
           active = 'active';
         }
         tBody += '<tr class="' + active + '" gte-row-id="' + rowId + '">';
-        var colOpts = settings.columnOpts, setColumns = sets.columns;        
+        var colOpts = settings.columnOpts, setColumns = sets.columns;
         if (colOpts.length > 0) {
           var col = 0, content = '';
           for (var colIdx in setColumns) {
             var td = setColumns[colIdx].data;
-              if (td !== 'GT_RowId' && invisibleCols[td] === true) {
-                content = jsonStruct[tr][td];
-                for (var k in colOpts) {
-                  if (typeof colOpts[k].render !== UNDEFINED && colOpts[k].target === col) { // got some render user defined func
-                    var row = {
-                      id: rowId
-                    };
-                    var type = 'string';
-                    content = colOpts[k].render(content, row, type);
-                  }
+            if (td !== 'GT_RowId' && invisibleCols[td] === true) {
+              content = jsonStruct[tr][td];
+              for (var k in colOpts) {
+                if (typeof colOpts[k].render !== UNDEFINED && colOpts[k].target === col) { // got some render user defined func
+                  var row = {
+                    id: rowId
+                  };
+                  var type = 'string';
+                  content = colOpts[k].render(content, row, type);
                 }
-                tBody += '<td data-name="' + td + '">' + content + '</td>';
               }
-              ++col;
+              tBody += '<td data-name="' + td + '">' + content + '</td>';
+            }
+            ++col;
           }
         } else {
           for (var colIdx in setColumns) {
-            var td = setColumns[colIdx].data;          
+            var td = setColumns[colIdx].data;
             if (td !== 'GT_RowId' && invisibleCols[td] === true) {
               tBody += '<td data-name="' + td + '">' + jsonStruct[tr][td] + '</td>';
             }
@@ -1069,10 +1090,10 @@
 //      console.log(cntCols + ' ' + Object.keys(json[0]).length);
       //@fixme - we do not need to check it here, coz we assign columns by value
       /*if (json[0] !== null && (Object.keys(json[0]).length !== cntCols && Object.keys(json[0]).length !== cntCols + 1) // +1 is the room for GT_RowId
-              || (json[0] === null) && json !== null && Object.keys(json).length !== cntCols) { // rows
-        console.error('You ought to adjust columns in thead and tfoot tags to json output!');
-        return false;
-      }*/
+       || (json[0] === null) && json !== null && Object.keys(json).length !== cntCols) { // rows
+       console.error('You ought to adjust columns in thead and tfoot tags to json output!');
+       return false;
+       }*/
 
       var ths = container.find('th'); // ths in this particular container
 
