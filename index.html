@@ -102,7 +102,7 @@
                 return 'Поиск по полю ' + title;
               }
             },
-            {data: "title"},
+//            {data: "title"},
             {data: "desc", sortable: false},            
             {
               data: "date",
@@ -130,9 +130,15 @@
           ],
           tableOpts: {
             buttons: [
-              {extended: "editor_create", editor: editor},
+              {extended: "editor_create", editor: editor, triggerAfter:(function() {
+                console.log('after create');
+              }), triggerBefore:(function() {
+                console.log('before create');
+              })},
               {extended: "editor_edit", editor: editor},
-              {extended: "editor_remove", editor: editor}
+              {extended: "editor_remove", editor: editor, triggerAfter:(function() {
+                console.log('after del');
+              })}
             ],
             buttonsPosition: ['top', 'bottom'],
             theme: 'std'
@@ -145,7 +151,7 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Name</th>
+          <!--<th>Name</th>-->
           <th>Description</th>
           <th>Date</th>
           <th>Info</th>
@@ -154,7 +160,7 @@
       <tfoot>
         <tr>
           <th>ID</th>
-          <th>Name</th>
+          <!--<th>Name</th>-->
           <th>Description</th>
           <th>Date</th>
           <th>Info</th>

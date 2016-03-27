@@ -15,6 +15,7 @@
             POSITION_TOP = 'top',
             POSITION_BOTTOM = 'bottom',
             UNDEFINED = 'undefined',
+            FUNCTION = 'function',
             // opts
             SELECTED = 'selected',
             CHECKED = 'checked';
@@ -239,6 +240,16 @@
         language = langs.en;
         break;
     }
+    
+    function triggerCustomFunc(buttons, editorAction, before) {
+        for (var k in buttons) {
+          if (before && buttons[k].extended === editorAction && typeof buttons[k].triggerBefore === FUNCTION) {
+            buttons[k].triggerBefore();
+          } else if (!before && buttons[k].extended === editorAction && typeof buttons[k].triggerAfter === FUNCTION) {
+            buttons[k].triggerAfter();
+          }
+        }
+    }
 
     function setButtons(settings) {
       var buttons = settings.tableOpts.buttons.sort(function (a, b) {
@@ -266,59 +277,24 @@
 
         // setting the events for each button
         settings.headTools.find('.gte_button.create').click(function () {
+          // trigger user custom func before popup creation
+          triggerCustomFunc(buttons, 'editor_create', 1);
           editorObj.triggerPopupCreate(settings);
           var popup = settings.container.find('.gte_editor_popup');
           popup.find('.gte_editor_title').text(language.gte_editor_popupheader_create);
           popup.find('#gte_sent_btn').text(language.gte_editor_sendbtn_create);
+          // trigger user custom func after popup creation
+          triggerCustomFunc(buttons, 'editor_create', 0);
         });
-
-        /*settings.headTools.find('.gte_button.edit').click(function () {
-         editorObj.triggerPopupEdit(settings);
-         var popup = settings.container.find('.gte_editor_popup');
-         popup.find('.gte_editor_title').text(language.gte_editor_popupheader_edit);
-         popup.find('#gte_sent_btn').text(language.gte_editor_sendbtn_update);
-         });
-         
-         settings.headTools.find('.gte_button.remove').click(function () {
-         editorObj.triggerPopupDelete(settings);
-         var popup = settings.container.find('.gte_editor_popup');
-         popup.find('.gte_editor_title').text(language.gte_editor_popupheader_delete);
-         popup.find('#gte_sent_btn').text(language.gte_editor_sendbtn_delete);
-         
-         var rowsToDelete = '';
-         var cntRows = 0;
-         settings.tbody.find('tr.active').each(function () {
-         rowsToDelete += '<input type="hidden" name="ids[]" value="' + $(this).attr('gte-row-id') + '"/>';
-         ++cntRows;
-         });
-         //          console.log(rowsToDelete);
-         
-         popup.find('#gte_msg').html('Are You sure You wish to delete ' + cntRows + ' rows?');
-         popup.find('#gte_ids').html(rowsToDelete);
-         
-         });*/
 
         settings.footTools.find('.gte_button.create').click(function () {
+          triggerCustomFunc(buttons, 'editor_create', 1);
           editorObj.triggerPopupCreate(settings);
           var popup = settings.container.find('.gte_editor_popup');
           popup.find('.gte_editor_title').text(language.gte_editor_popupheader_create);
           popup.find('#gte_sent_btn').text(language.gte_editor_sendbtn_create);
+          triggerCustomFunc(buttons, 'editor_create', 0);
         });
-
-//        settings.footTools.find('.gte_button.edit').click(function () {
-//          editorObj.triggerPopupEdit(settings);
-//          var popup = settings.container.find('.gte_editor_popup');
-//          popup.find('.gte_editor_title').text(language.gte_editor_popupheader_edit);
-//          popup.find('#gte_sent_btn').text(language.gte_editor_sendbtn_update);
-//        });
-//
-//        settings.footTools.find('.gte_button.remove').click(function () {
-//          editorObj.triggerPopupDelete(settings);
-//          var popup = settings.container.find('.gte_editor_popup');
-//          popup.find('.gte_editor_title').text(language.gte_editor_popupheader_delete);
-//          popup.find('#gte_sent_btn').text(language.gte_editor_sendbtn_delete);
-//        });
-
       }
     }
 
@@ -808,24 +784,27 @@
     }
 
     function setEditBtn(btnObj) {
-      var editorObj = settings.tableOpts.buttons[0].editor;
+      var editorObj = settings.tableOpts.buttons[0].editor, buttons = settings.tableOpts.buttons;
       btnObj.removeClass('gte_btn_disabled');
       btnObj.off('click');
 
       btnObj.click(function () {
+        triggerCustomFunc(buttons, 'editor_edit', 1);
         editorObj.triggerPopupEdit(settings);
         var popup = settings.container.find('.gte_editor_popup');
         popup.find('.gte_editor_title').text(language.gte_editor_popupheader_edit);
         popup.find('#gte_sent_btn').text(language.gte_editor_sendbtn_update);
+        triggerCustomFunc(buttons, 'editor_edit', 0);
       });
     }
 
     function setDeleteBtn(btnObj) {
-      var editorObj = settings.tableOpts.buttons[0].editor;
+      var editorObj = settings.tableOpts.buttons[0].editor, buttons = settings.tableOpts.buttons;
       btnObj.removeClass('gte_btn_disabled');
       btnObj.off('click'); // avoid previous set with ex.: 1 row seelcted and then >= 2
 
       btnObj.click(function () {
+        triggerCustomFunc(buttons, 'editor_remove', 1);
         editorObj.triggerPopupDelete(settings);
         var popup = settings.container.find('.gte_editor_popup');
         popup.find('.gte_editor_title').text(language.gte_editor_popupheader_delete);
@@ -841,6 +820,7 @@
 
         popup.find('#gte_msg').html('Are You sure You wish to delete ' + cntRows + ' rows?');
         popup.find('#gte_ids').html(rowsToDelete);
+        triggerCustomFunc(buttons, 'editor_remove', 0);
       });
     }
 

@@ -106,11 +106,17 @@ do the following:
               target: 3
             }            
           ],
-          tableOpts: { // this is only for additional editor plug-in which helps edit every row with any type 
-            buttons: [
-              {extended: "editor_create", editor: editor},
+          tableOpts: { // this is only for editor plug-in which helps edit every row with any type 
+            buttons: [ // additionally U may want put some trigger function before/after popup creation ex.: to set autocomplete on field etc
+              {extended: "editor_create", editor: editor, triggerAfter:(function() {
+                console.log('after create');
+              }), triggerBefore:(function() {
+                console.log('before create');
+              })},
               {extended: "editor_edit", editor: editor},
-              {extended: "editor_remove", editor: editor}              
+              {extended: "editor_remove", editor: editor, triggerAfter:(function() {
+                console.log('after del');
+              })}             
             ],            
             buttonsPosition: ['top', 'bottom'], // buttons for popup editing
             theme: 'std'
