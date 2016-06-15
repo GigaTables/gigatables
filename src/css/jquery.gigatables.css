@@ -1,6 +1,7 @@
 .gt_container {
   margin:0 auto;
   font:normal 14px Tahoma;
+  min-width:650px;
 }
 table.gigatable {
   border-collapse: separate;
@@ -10,6 +11,7 @@ table.gigatable {
   border-collapse: collapse;
   margin:0 auto;
   table-layout: fixed;
+  min-width: 550px;
 }
 tbody {
   color:#333;
@@ -182,8 +184,8 @@ td {
 }
 .sorting {
   background:url('../images/sort_both.png') right center no-repeat;
-/*  width:19px;
-  height:19px;*/
+  /*  width:19px;
+    height:19px;*/
 }
 .sorting_asc {
   background:url('../images/sort_asc.png') right top no-repeat;
