@@ -27,12 +27,12 @@
             },
             {// an example of using select - automatically selected if matches with data in table column
               label: "Types:",
-              name: "types",
+              name: "types[]",
               values: [// if select,checkbox,radio etc types - need this kinda structure of value
                 {'key1': 'val1'},
                 {'key2': 'val2'}
               ],
-              type: 'select', // select,checkbox,radio
+              type: 'checkbox', // select,checkbox,radio
 //              attrs: [
 //                {'multiple':true}
 //              ]
@@ -42,8 +42,8 @@
               name: "title",
               type: 'text', // default, other: password, file, select, multiselect etc
               attrs: [
-                {'pattern':'^[A-Za-z0-9_]+$'}
-              ]              
+                {'pattern': '^[A-Za-z0-9_]+$'}
+              ]
             },
             {
               label: "Description:",
@@ -91,6 +91,7 @@
           perPageRows: [25, 50, 100, 200, 500],
           defaultPerPage: 50,
           ajax: 'gigatables.php',
+          requestType: 'POST',
           columns: [
             {// include all defaults
               data: "id",
@@ -103,7 +104,7 @@
               }
             },
 //            {data: "title"},
-            {data: "desc", sortable: false},            
+            {data: "desc", sortable: false},
             {
               data: "date",
               searchable: false
@@ -130,15 +131,15 @@
           ],
           tableOpts: {
             buttons: [
-              {extended: "editor_create", editor: editor, triggerAfter:(function() {
-                console.log('after create');
-              }), triggerBefore:(function() {
-                console.log('before create');
-              })},
+              {extended: "editor_create", editor: editor, triggerAfter: (function () {
+                  console.log('after create');
+                }), triggerBefore: (function () {
+                  console.log('before create');
+                })},
               {extended: "editor_edit", editor: editor},
-              {extended: "editor_remove", editor: editor, triggerAfter:(function() {
-                console.log('after del');
-              })}
+              {extended: "editor_remove", editor: editor, triggerAfter: (function () {
+                  console.log('after del');
+                })}
             ],
             buttonsPosition: ['top', 'bottom'],
             theme: 'std'
