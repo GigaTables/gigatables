@@ -214,9 +214,9 @@ $.fn.GigaTable.Editor = function (options) {
         field = trActive.children('td[data-name="' + fieldName + '"]');
         fieldValue = field.text().trim();
         if (field.length > 0 && fieldType !== TYPE_FILE) { // file value protection avoiding "The operation is insecure" error         
-          var selectors = ['select', 'checkbox', 'radio']; // making these elements selected         
+          var selectors = [TYPE_SELECT, TYPE_CHECKBOX, TYPE_RADIO]; // making these elements selected         
           if (selectors.indexOf(fieldType) !== -1) {
-            if (fieldType === 'select') {
+            if (fieldType === TYPE_SELECT) {
               popup.find(fieldType + '[name="' + fieldName + '"] option[data-value="' + fieldValue.toLowerCase() + '"]').attr('selected', true);
             } else { // checkbox/radio
               popup.find('input[name="' + fieldName + '"][data-value="' + fieldValue.toLowerCase() + '"]').attr('checked', true);
@@ -358,11 +358,13 @@ $.fn.GigaTable.Editor = function (options) {
         case TYPE_CHECKBOX:
         case TYPE_RADIO:
           var values = fields[k].values;
-          var options = '', val = '';
+          var options = '', val = '',
+                  //@fixme regexp to remove ex: [3] etc
+                  id = fieldName.replace('[]', '');
           for (var k in values) {
             for (var key in values[k]) {
               val = values[k][key].trim();
-              options += '<label class="gte_label_text"><input ' + attributes + ' id="' + fieldName + '" type="' + fieldType + '" name="' + fieldName + '" data-value="' + val.toLowerCase() + '">' + val + '</label>';
+              options += '<label class="gte_label_text"><input ' + attributes + ' id="' + id + '" type="' + fieldType + '" name="' + fieldName + '" data-value="' + val.toLowerCase() + '" value="' + key + '">' + val + '</label>';
             }
           }
           htmlFieldsCreate += '<div class="gte_editor_fields"><label class="gte_label">' + fieldLabel + '</label><div class="gte_field">' +

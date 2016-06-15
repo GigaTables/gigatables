@@ -203,6 +203,7 @@
       },
       struct: struct,
       lang: 'en',
+      requestType: 'GET',
       perPageRows: [25, 50, 100, 200, 500],
       defaultPerPage: 25,
       columns: [],
@@ -1057,7 +1058,7 @@
 
     $.ajax({
       url: settings.ajax,
-      type: 'GET',
+      type: settings.requestType,
       dataType: 'json'
     }).done(function (data) {
       json = data['rows'] ? data['rows'] : data['row']; // one row or several
