@@ -31,7 +31,10 @@ for ($i = 1; $i < 111;  ++$i) {
         'desc' => 'Lorem Ipsum is simply dummy ' . mt_rand(1, 9999) . ' text of the printing and typesetting',
 //    'desc' => '<input type="text" name="ttl" value="Test '.$i.'st row Test '.$i.'st row Test '.$i.'st row Test '.$i.'st row Test '.$i.'st row" /> ', 
         'info' => 'some info some info some info some info',
-        'date' => date('H:i:s d:m:Y', time() - $i)
+        'date' => date('H:i:s d:m:Y', time() - $i),
+        'field1' => $i + 123,
+        'field2' => $i + 1234,
+        'field3' => $i + 12345,
     ];
 }
 
