@@ -55,6 +55,9 @@ td {
   padding:0 0 10px 0;
   cursor:pointer;
 }
+.gt_th_box {
+  padding:0 20px 0 0;
+}
 .gt_head_tools {
   margin:15px 0;
 }
