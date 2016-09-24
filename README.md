@@ -10,9 +10,11 @@ Unlike other JQuery-based tables (which earn money from CRUD operations) it is u
 
 ## Fiew screen-shots
 
-[[https://raw.githubusercontent.com/GigaTables/gigatables/master/GigaTables_basic_view.png|alt=octocat]]
+### Multiple select with Ctrl and Shift
+![alt tag](https://raw.githubusercontent.com/GigaTables/gigatables/master/GigaTables_basic_view.png)
 
-
+### CRUD pop-ups
+![alt tag](https://raw.githubusercontent.com/GigaTables/gigatables/master/GigaTables_edit_item.png)
 
 ## Installation
 ```HTML
