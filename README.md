@@ -8,6 +8,12 @@ Unlike other JQuery-based tables (which earn money from CRUD operations) it is u
 - bower install gigatables (--allow-root, for sudo)
 - composer require gt/gigatables
 
+## Fiew screen-shots
+
+[[https://raw.githubusercontent.com/GigaTables/gigatables/master/GigaTables_basic_view.png|alt=octocat]]
+
+
+
 ## Installation
 ```HTML
     <script src="jquery.js"></script>
