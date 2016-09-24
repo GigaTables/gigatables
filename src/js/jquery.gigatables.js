@@ -992,6 +992,10 @@
                 // set event on every page btn
                 settings.container.find('.gt_page').click(function () {
                     var pageObj = $(this);
+                    var editBtn = settings.container.find('.gte_button.edit'),
+                        deleteBtn = settings.container.find('.gte_button.remove');
+                    unsetEditBtn(editBtn);
+                    unsetDeleteBtn(deleteBtn);
                     settings.fromRow = parseInt(pageObj.attr('data-from'));
                     setTableRows(settings, json);
                 });
