@@ -21,10 +21,10 @@ date_default_timezone_set('Europe/Moscow');
   'date' => date('H:i:s d:m:Y')
   ]]; */
 
-for ($i = 1; $i < 111;  ++$i) {
+for ($i = 1; $i < 111; ++$i) {
 
     $arr['rows'][] = [
-        'GT_RowId' => $i,        
+        'GT_RowId' => $i,
         'title' => 'Test ' . $i . 'st row',
         'id' => $i,
 //    'title_en' => 'Test 1st row', 
@@ -32,7 +32,7 @@ for ($i = 1; $i < 111;  ++$i) {
 //    'desc' => '<input type="text" name="ttl" value="Test '.$i.'st row Test '.$i.'st row Test '.$i.'st row Test '.$i.'st row Test '.$i.'st row" /> ', 
         'info' => 'some info some info some info some info',
         'date' => date('H:i:s d:m:Y', time() - $i),
-        'field1' => $i + 123,
+        'field1' => ($i % 5 === 0) ? null : $i,
         'field2' => $i + 1234,
         'field3' => $i + 12345,
     ];

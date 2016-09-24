@@ -16,6 +16,9 @@
             POSITION_BOTTOM = 'bottom',
             UNDEFINED = 'undefined',
             FUNCTION = 'function',
+            SORT_ASC_NUM = 1,
+            SORT_DESC_NUM = -1,
+            PROTECT_SILLY_PRESS_TIME = 50,
         // opts
             SELECTED = 'selected',
             CHECKED = 'checked';
@@ -317,10 +320,10 @@
                             if (objTh.hasClass('sorting') || objTh.hasClass('sorting_desc')) {
                                 ths.eq(idx).removeClass('sorting').removeClass('sorting_desc').addClass('sorting_asc'); // header
                                 ths.eq(idx + cols.length).removeClass('sorting').removeClass('sorting_desc').addClass('sorting_asc'); // footer
-                                sortingOrder = 1;
+                                sortingOrder = SORT_ASC_NUM;
                             } else {
 //            console.log(-1);
-                                sortingOrder = -1;
+                                sortingOrder = SORT_DESC_NUM;
                                 ths.eq(idx).removeClass('sorting_asc').addClass('sorting_desc');
                                 ths.eq(idx + cols.length).removeClass('sorting_asc').addClass('sorting_desc');
                             }
@@ -352,18 +355,16 @@
                              }
                              });*/
                             // ===========
-                            if (sortingOrder === 1) { // asc
+                            if (sortingOrder === SORT_ASC_NUM) { // asc
                                 nJson.sort(function (a, b) {
-                                    a = eval('a.' + cols[idx].data) + '';
-                                    b = eval('b.' + cols[idx].data) + '';
-
+                                    a = (eval('a.' + cols[idx].data) === null) ? '' : eval('a.' + cols[idx].data) + '';
+                                    b = (eval('b.' + cols[idx].data) === null) ? '' : eval('b.' + cols[idx].data) + '';
                                     if (check === 0) { // check just the 1st time
                                         if (isNaN(a - b)) {
                                             isNan = 1;
                                         }
                                         check = 1;
                                     }
-
                                     if (isNan) {
                                         return a.localeCompare(b);
                                     }
@@ -371,15 +372,14 @@
                                 });
                             } else { // desc
                                 nJson.sort(function (a, b) {
-                                    a = eval('a.' + cols[idx].data) + '';
-                                    b = eval('b.' + cols[idx].data) + '';
+                                    a = (eval('a.' + cols[idx].data) === null) ? '' : eval('a.' + cols[idx].data) + '';
+                                    b = (eval('b.' + cols[idx].data) === null) ? '' : eval('b.' + cols[idx].data) + '';
                                     if (check === 0) { // check just the 1st time
                                         if (isNaN(a - b)) {
                                             isNan = 1;
                                         }
                                         check = 1;
                                     }
-
                                     if (isNan) {
                                         return b.localeCompare(a);
                                     }
@@ -387,7 +387,7 @@
                                 });
                             }
                             setTableSort(settings, nJson);
-                        }, 50); // silly pressing buttons protection
+                        }, PROTECT_SILLY_PRESS_TIME); // silly pressing buttons protection
                     });
                 }
                 ++i;
