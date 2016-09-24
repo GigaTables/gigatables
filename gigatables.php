@@ -32,7 +32,7 @@ for ($i = 1; $i < 111; ++$i) {
 //    'desc' => '<input type="text" name="ttl" value="Test '.$i.'st row Test '.$i.'st row Test '.$i.'st row Test '.$i.'st row Test '.$i.'st row" /> ', 
         'info' => 'some info some info some info some info',
         'date' => date('H:i:s d:m:Y', time() - $i),
-        'field1' => ($i % 5 === 0) ? null : $i,
+        'field1' => ($i % 5 === 0) ? null : (($i % 6 === 0) ? 0 : $i),
         'field2' => $i + 1234,
         'field3' => $i + 12345,
     ];

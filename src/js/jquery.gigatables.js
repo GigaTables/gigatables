@@ -357,8 +357,9 @@
                             // ===========
                             if (sortingOrder === SORT_ASC_NUM) { // asc
                                 nJson.sort(function (a, b) {
-                                    a = (eval('a.' + cols[idx].data) === null) ? '' : eval('a.' + cols[idx].data) + '';
-                                    b = (eval('b.' + cols[idx].data) === null) ? '' : eval('b.' + cols[idx].data) + '';
+                                    var an = eval('a.' + cols[idx].data), bn = eval('b.' + cols[idx].data);
+                                    a = (an === null) ? '' : an + '';
+                                    b = (bn === null) ? '' : bn + '';
                                     if (check === 0) { // check just the 1st time
                                         if (isNaN(a - b)) {
                                             isNan = 1;
@@ -372,8 +373,9 @@
                                 });
                             } else { // desc
                                 nJson.sort(function (a, b) {
-                                    a = (eval('a.' + cols[idx].data) === null) ? '' : eval('a.' + cols[idx].data) + '';
-                                    b = (eval('b.' + cols[idx].data) === null) ? '' : eval('b.' + cols[idx].data) + '';
+                                    var an = eval('a.' + cols[idx].data), bn = eval('b.' + cols[idx].data);
+                                    a = (an === null) ? '' : an + '';
+                                    b = (bn === null) ? '' : bn + '';
                                     if (check === 0) { // check just the 1st time
                                         if (isNaN(a - b)) {
                                             isNan = 1;
