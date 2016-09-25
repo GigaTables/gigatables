@@ -1,6 +1,6 @@
 {
   "name": "gigatables",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "GigaTables is a plug-in to help web-developers process data in applications and CMS, CRM, ERP or similar systems.",
   "main": "index.html",
   "directories": {
