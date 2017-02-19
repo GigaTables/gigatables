@@ -322,7 +322,6 @@
                                 ths.eq(idx + cols.length).removeClass('sorting').removeClass('sorting_desc').addClass('sorting_asc'); // footer
                                 sortingOrder = SORT_ASC_NUM;
                             } else {
-//            console.log(-1);
                                 sortingOrder = SORT_DESC_NUM;
                                 ths.eq(idx).removeClass('sorting_asc').addClass('sorting_desc');
                                 ths.eq(idx + cols.length).removeClass('sorting_asc').addClass('sorting_desc');
@@ -330,7 +329,6 @@
 
                             var isNan = 0,
                                 check = 0;
-
                             /*nJson.sort(function (a, b) {
                              a = eval('a.' + cols[idx].data) + '';
                              b = eval('b.' + cols[idx].data) + '';
@@ -403,7 +401,7 @@
                 var objSearch = $(this), val = objSearch.val(), len = val.length;
                 nowMillis = (new Date()).getTime();
                 var period = nowMillis - lastTimeKeyup;
-//        console.log(period);
+
                 if (len > 0 || (len === 0 && val === '')) { // do search
                     if (nothing === true && val === '') {
                         return; // exit coz user pressed not a symbol keys
@@ -501,12 +499,10 @@
                 var selectPerPage = sets.container.find('.gt_select');
                 // listen for event on all select in this container context
                 selectPerPage.change(function () {
-//          console.log($(this).val());
                     settings.defaultPerPage = $(this).val();
                     settings.fromRow = 0;
 
                     setTableRows(settings, json);
-
                     selectPerPage.find('option').prop(SELECTED, false);
                     selectPerPage.find('option[value="' + settings.defaultPerPage + '"]').prop(SELECTED, true);
                 });
@@ -514,7 +510,6 @@
         }
 
         function drawPagnButtons(pages, fromRow, amount) {
-
             var MORE = 5,
                 pagesDraw = '',
                 selected = '',
@@ -523,17 +518,11 @@
                 selectedPage = fromRow / amount + 1,
                 tail = parseInt(pages) - MORE;
 //      var prev = pgnObj.find('.gt_page .prev'), next = pgnObj.find('.gt_page.next');
-//      console.log(pgnObj);
-//      prev.text('vsdfvds');
-
             for (var p = 0; p < pages; ++p) {
                 from = (p * amount);
-//        console.log(from + ' ' + fromRow);
-
                 var prevPage = p - 1, nextPage = p + 1;
 
                 if (selectedPage === nextPage) {
-
                     prevFrom = prevPage * amount;
                     if (prevPage < 0)
                         prevFrom = (pages - 1) * amount;
@@ -541,21 +530,16 @@
                     nextFrom = nextPage * amount;
                     if (nextPage === pages)
                         nextFrom = 0;
-//          console.log(selectedPage);
-//          selected = SELECTED;
                 }
 
                 if (p > MORE) {
-
                     if (selectedPage < MORE) { // head
-
                         pagesDraw += '<div class="gt_page_dots">...</div>';
                         if (p + 1 === pages)
                             selected = SELECTED;
                         pagesDraw += '<div data-from="' + ((pages - 1) * amount) + '" class="gt_page ' + selected + '">' + pages + '</div>';
                         break;
                     } else if (selectedPage >= MORE && selectedPage <= pages - MORE) { //middle
-
                         prevPage = selectedPage - 1;
                         nextPage = selectedPage + 1;
 
@@ -572,7 +556,6 @@
 
                         pagesDraw += '<div class="gt_page_dots">...</div>';
                         pagesDraw += '<div data-from="' + ((pages - 1) * amount) + '" class="gt_page">' + pages + '</div>'; // last
-
                         break;
                     } else if (selectedPage > tail) { // tail
 
@@ -606,13 +589,10 @@
                         selected = SELECTED;
                     pagesDraw += '<div data-from="' + from + '" class="gt_page ' + selected + '">' + nextPage + '</div>';
                 }
-
                 selected = '';
             }
-
             return '<div class="gt_pagn"><div data-from="' + prevFrom + '" class="gt_page prev">' + language.prev + '</div>'
                 + pagesDraw + '<div data-from="' + nextFrom + '" class="gt_page next">' + language.next + '</div></div>';
-
         }
 
         /**
@@ -621,14 +601,11 @@
          * @param {object} json
          * @returns {undefined}
          */
-
         function setTableSort(sets, json) { // without recreation of all structure
             var tBody = '', jsonStruct = json;
             var rows = parseInt(sets.defaultPerPage) + parseInt(sets.fromRow);
-//      console.log('rows' + rows + ', from ' + sets.fromRow);
-//      console.log(jsonStruct);
-
             var rows = 0;
+
             if (jsonStruct.length > sets.defaultPerPage) {
                 rows = parseInt(sets.defaultPerPage) + parseInt(sets.fromRow);
             } else {
@@ -735,7 +712,7 @@
                     trActives[tra] = tra;
                 });
             }
-//      console.log(jsonStruct + ' ' + rows + ' ' + sets.fromRow);
+
             for (var tr = sets.fromRow; tr <= rows - 1 && (typeof jsonStruct[tr] !== UNDEFINED); tr++) {
                 var rowId = 0, active = '';
                 if (typeof jsonStruct[tr]['GT_RowId'] !== UNDEFINED) {
@@ -832,7 +809,6 @@
                     rowsToDelete += '<input type="hidden" name="ids[]" value="' + $(this).attr('gte-row-id') + '"/>';
                     ++cntRows;
                 });
-//          console.log(rowsToDelete);
 
                 popup.find('#gte_msg').html('Are You sure You wish to delete ' + cntRows + ' rows?');
                 popup.find('#gte_ids').html(rowsToDelete);
@@ -898,23 +874,17 @@
 
                         var prev = trClicked.siblings('.active:first'),
                             next = trClicked.siblings('.active:last');
-
                         var prevIdx = prev.index(), nextIdx = next.index(), curIdx = trClicked.index();
-//            console.log(next + '  ' +prev);
                         trClicked.addClass('active');
                         if (nextIdx === prevIdx) { // selected 1 row before
-//              console.log(curIdx + ' ' + nextIdx);
                             if (nextIdx > curIdx) {
-//                console.log(trs);
                                 trs.each(function () {
                                     var tr = $(this),
                                         idx = tr.index();
-//                  console.log(idx);
                                     if (idx > curIdx && idx < nextIdx) {
                                         tr.addClass('active');
                                     }
                                 });
-
                             } else {
                                 trs.each(function () {
                                     var tr = $(this), idx = tr.index();
@@ -922,7 +892,6 @@
                                         tr.addClass('active');
                                     }
                                 });
-
                             }
                         } else { // selected several and then pressed shift+click need to select rows inclusive nearest
                             var diff1 = Math.abs(curIdx - prevIdx);
@@ -1014,10 +983,8 @@
         // constructing container
         that.wrap('<div class="gt_container"></div>');
 
-
         var container = that.parent().parent().find('.gt_container').prepend('<div class="gt_head_tools"></div>'),
             headTools = that.parent().parent().find('.gt_head_tools');
-
         container.append('<div class="gt_foot_tools"></div>');
         var footTools = container.find('.gt_foot_tools');
 
@@ -1025,29 +992,19 @@
         if (settings.struct.rowsSelector.length > 0) {
 
             var options = language.show + ' <select class="gt_select" name="per_page_rows">';
-
             for (var k in settings.perPageRows) {
-
                 var rows = settings.perPageRows[k];
-
                 options += '<option ' + ((settings.defaultPerPage === rows) ? 'selected=""' : '') + ' value="' + rows + '">' + rows + '</option>';
-
             }
-
             options += '</select> ' + language.entries;
-//      console.log(options);
-//      console.log(settings.struct.rowsSelector.indexOf('topss'));
-            if (settings.struct.rowsSelector.indexOf('top') !== -1) {
 
+            if (settings.struct.rowsSelector.indexOf('top') !== -1) {
                 headTools.append('<div class="gt_rows_selector">' + options + '</div>');
             }
 
             if (settings.struct.rowsSelector.indexOf('bottom') !== -1) {
-
                 footTools.append('<div class="gt_rows_selector">' + options + '</div>');
-
             }
-
         }
 
         if (settings.struct.search.length > 0) {
@@ -1082,13 +1039,10 @@
             dataType: 'json'
         }).done(function (data) {
             json = data['rows'] ? data['rows'] : data['row']; // one row or several
-//      console.log(Object.keys(json[0]).length + ' ' +cntCols);
             if (typeof json === UNDEFINED) {
                 console.error('Put json into rows or row associative key!');
                 return false;
             }
-//      console.log(Object.keys(json[0]).length);
-//      console.log(cntCols + ' ' + Object.keys(json[0]).length);
             //@fixme - we do not need to check it here, coz we assign columns by value
             /*if (json[0] !== null && (Object.keys(json[0]).length !== cntCols && Object.keys(json[0]).length !== cntCols + 1) // +1 is the room for GT_RowId
              || (json[0] === null) && json !== null && Object.keys(json).length !== cntCols) { // rows
