@@ -87,7 +87,6 @@ $.fn.GigaTable.Editor = function (options) {
       }
 
       sendBtn.click(function () {
-//        console.log(that.editorSettings);
         if (typeof files !== UNDEFINED && files !== null) {
           var ajaxDest = obj.editorSettings.ajaxFiles;
           if (ajaxDest === UNDEFINED || ajaxDest === null
@@ -102,7 +101,6 @@ $.fn.GigaTable.Editor = function (options) {
               data.append(k, val);
             });
           });
-//          console.log(data);
           $.ajax({
             url: ajaxDest,
             type: 'POST',
@@ -124,7 +122,6 @@ $.fn.GigaTable.Editor = function (options) {
           data: serData,
           dataType: 'json'
         }).done(function (data) {
-//          console.log(data);
           if (action === ACTION_CREATE) {
             var columns = settings.columns; // GT columns not GTE
             var id = 0;
@@ -151,8 +148,8 @@ $.fn.GigaTable.Editor = function (options) {
 
           } else if (action === ACTION_EDIT) {
             var tbody = settings.container.find('tbody'),
-                    columns = settings.columns; // GT columns not GTE            
-            var tr = tbody.find('tr.active'); // there is only 1 tr active for editor            
+                    columns = settings.columns; // GT columns not GTE
+            var tr = tbody.find('tr.active'); // there is only 1 tr active for editor
             var tds = '';
 
             for (var k in columns) {
@@ -207,14 +204,14 @@ $.fn.GigaTable.Editor = function (options) {
               bg = settings.container.find('.gte_popup_background');
       var fields = this.editorSettings.fields,
               trActive = settings.tbody.find('tr.active');
-//      console.log(trActive.children());
+
       for (var k in fields) {
         fieldName = fields[k].name;
         fieldType = fields[k].type;
         field = trActive.children('td[data-name="' + fieldName + '"]');
         fieldValue = field.text().trim();
-        if (field.length > 0 && fieldType !== TYPE_FILE) { // file value protection avoiding "The operation is insecure" error         
-          var selectors = [TYPE_SELECT, TYPE_CHECKBOX, TYPE_RADIO]; // making these elements selected         
+        if (field.length > 0 && fieldType !== TYPE_FILE) { // file value protection avoiding "The operation is insecure" error
+          var selectors = [TYPE_SELECT, TYPE_CHECKBOX, TYPE_RADIO]; // making these elements selected
           if (selectors.indexOf(fieldType) !== -1) {
             if (fieldType === TYPE_SELECT) {
               popup.find(fieldType + '[name="' + fieldName + '"] option[data-value="' + fieldValue.toLowerCase() + '"]').attr('selected', true);
@@ -272,7 +269,6 @@ $.fn.GigaTable.Editor = function (options) {
     obj.buttons.editor_edit = '<div class="gte_button edit gte_btn_disabled"><span>gte.button.editor_edit</span></div>';
     obj.buttons.editor_create = '<div class="gte_button create"><span>gte.button.editor_create</span></div>';
     obj.buttons.editor_remove = '<div class="gte_button remove gte_btn_disabled"><span>gte.button.editor_remove</span></div>';
-//      console.log(buttons);
   }
 
   function setPopup(settings) {
@@ -383,7 +379,6 @@ $.fn.GigaTable.Editor = function (options) {
             '<div><input type="hidden" name="action" value="create"/></div>' +
             htmlFieldsCreate +
             '</div></form></div></div><div class="gte_footer"><div class="gte_form_err"></div><div class="gte_form_buttons"><button id="gte_sent_btn" class="btn">gte.editor.btn.create</button></div></div></div></div></div></div></div>';
-//    console.log(popupCreate);
     popupEdit = '<div class="gte_editor_popup"><div class="gte_popup_container"><div class="gte_popup_container_wrapper"><div class="gte_form_border_box"><div class="gte_form_fields"><div class="gte_header">' +
             '<div class="gte_editor_title">gte.editor.popupheader.edit</div>' +
             '</div><div class="gte_form_body"><div class="gte_form_body_content"><form id="gte_form" action="" method="post"><div class="gte_form_content">' +
@@ -398,7 +393,6 @@ $.fn.GigaTable.Editor = function (options) {
             '<div id="gte_ids"></div>' +
             '<div id="gte_msg"></div>' +
             '</div></form></div></div><div class="gte_footer"><div class="gte_form_err"></div><div class="gte_form_buttons"><button id="gte_sent_btn" class="btn">gte.editor.btn.delete</button></div></div></div></div></div></div></div>';
-
     popupBackground = '<div class="gte_popup_background"></div>';
 
     obj.popup.create = popupCreate;
