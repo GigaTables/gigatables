@@ -1,4 +1,7 @@
-# GigaTables JQuery plug-in
+# This progect won't be supported anymore, use newer and better version for ReactJS GigaTables/reactables
+https://github.com/GigaTables/reactables
+
+## GigaTables JQuery plug-in
 GigaTables is a plug-in to help web-developers process data in applications and CMS, CRM, ERP or similar systems. 
 Unlike other JQuery-based tables (which earn money from CRUD operations) it is under MIT license - totally free
 
